@@ -15,7 +15,10 @@ h1, h2, h3, h4, h5, h6, p, span {
     margin: 5px 0;
 }
 
-section { width: 100%; }
+section { 
+    width: 100%;
+    padding: 0 20px;
+}
 
 
 /***********************************************/
@@ -59,7 +62,7 @@ header * {
 /***********************************************/
 
 .details-container { 
-    margin: 25px 40px 10px 40px;
+    margin: 25px 20px 10px 20px;
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -68,7 +71,32 @@ header * {
 
 .details-row { margin-top: 10px; }
 .details-row-title { font-weight: bold; }
-.details-row-text { font-size: 0.9rem; }
+.details-row-text { 
+    font-size: 0.9rem; 
+    min-height: 1.1rem;
+}
+
+/*******   AVAILABILITY TABLE    *******/
+#details-availability-table {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+#details-availability-table table {
+    width: 100%;
+    max-width: 700px;
+    border-spacing: 0px;
+}
+
+#details-availability-table th,
+#details-availability-table td {
+    border: 1px solid #ddd;
+}
+
+.table-head-col1 {
+    text-align: left;
+}
 
 /***********************************************/
 /**             Section: LOADER                */

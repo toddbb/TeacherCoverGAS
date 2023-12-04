@@ -11,6 +11,14 @@ const Details = {
         Details.el.name.innerText = Teacher.data.name;
         Details.el.email.innerText = Teacher.data.email;
         Details.el.phone.innerText = Teacher.data.phone;
+        Details.el.centre.innerText = Teacher.data.centre;
+        //// availabilitiy table
+        for (const day in Teacher.data.availability) {
+            console.log(`${day}: ${Teacher.data.availability[day]}`)
+            let elRow = document.getElementById('row-' + day);
+            console.log(elRow);
+        }
+
     },
 
 
@@ -19,6 +27,7 @@ const Details = {
         Details.el.name = document.getElementById('details-name');
         Details.el.email = document.getElementById('details-email');
         Details.el.phone = document.getElementById('details-phone');
+        Details.el.centre = document.getElementById('details-centre');
     }
 
 }
@@ -66,8 +75,6 @@ const Ui = {
 /**             HELPER FUNCTIONS                        **/
 /*********************************************************/
 function setDisplay(el, action) {
-    console.log(el);
-
     if (action === 'show') {
         el.classList.remove('nodisplay');
     }
@@ -124,7 +131,18 @@ function delay(time, msg) {
 const TestTeacherData_EXISTS = {
     name: "Freddie Mercury",
     email: "freddie@mymail.net",
-    phone: "012 345 6789"
+    phone: "012 345 6789",
+    centre: "TC-HCMC99",
+    availability: {
+        monday: [false, false, true],
+        tuesday: [false, false, false],
+        wednesday: [true, true, true],
+        thursday: [true, true, false],
+        friday: [false, false, false],
+        saturday: [false, true, false],
+        sunday: [false, true, false]
+    },
+    type: null
 }
 
 
