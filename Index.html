@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="dev/style.css">
     
   </head>
@@ -46,50 +47,50 @@
             <div class="details-row-title">Availability</div>
             <div class="details-row-text" id="details-availability-table">
               <table>
-                <tr class="availability-table-row">
+                <tr class="availability-table-row availability-table-row-header">
                     <th class="availability-table-head table-head-col1">Days</th>
                     <th class="availability-table-head">Morning</th>
                     <th class="availability-table-head">Afternoon</th>
                     <th class="availability-table-head">Evening</th>
                 </tr>
                 <tr id="row-monday" class="availability-table-row">
-                    <td class="availability-table-cell">Monday</td>
+                    <td class="availability-table-row-head">Monday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-tuesday" class="availability-table-row">
-                    <td class="availability-table-cell">Tuesday</td>
+                    <td class="availability-table-row-head">Tuesday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-wednesday" class="availability-table-row">
-                    <td class="availability-table-cell">Wednesday</td>
+                    <td class="availability-table-row-head">Wednesday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-thursday" class="availability-table-row">
-                    <td class="availability-table-cell">Thursday</td>
+                    <td class="availability-table-row-head">Thursday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-friday" class="availability-table-row">
-                    <td class="availability-table-cell">Friday</td>
+                    <td class="availability-table-row-head">Friday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-saturday" class="availability-table-row">
-                    <td class="availability-table-cell">Saturday</td>
+                    <td class="availability-table-row-head">Saturday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                 </tr>
                 <tr id="row-sunday" class="availability-table-row">
-                    <td class="availability-table-cell">Sunday</td>
+                    <td class="availability-table-row-head">Sunday</td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
                     <td class="availability-table-cell"></td>
@@ -99,7 +100,9 @@
           </div>
           <div class="details-row">
             <div class="details-row-title">Type of Cover</div>
-            <div class="details-row-text" id="details-type">&nbsp;</div>
+            <div class="details-row-text" id="details-coverType">
+              <ul id="coverType-list"></ul>
+            </div>
           </div>
         </div>
       </section>

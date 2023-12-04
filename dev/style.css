@@ -21,6 +21,16 @@ section {
 }
 
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+
 /***********************************************/
 /**         BODY, MAIN, AND HEADER             */
 /***********************************************/
@@ -96,6 +106,18 @@ header * {
 
 .table-head-col1 {
     text-align: left;
+}
+
+.availability-table-row-header {
+    background-color: #d5e8d2;
+}
+
+.availability-table-row:not(:first-child) {
+    height: 30px;
+}
+
+.availability-table-cell {
+    text-align: center;
 }
 
 /***********************************************/

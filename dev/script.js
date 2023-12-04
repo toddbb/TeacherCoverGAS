@@ -13,11 +13,32 @@ const Details = {
         Details.el.phone.innerText = Teacher.data.phone;
         Details.el.centre.innerText = Teacher.data.centre;
         //// availabilitiy table
-        for (const day in Teacher.data.availability) {
-            console.log(`${day}: ${Teacher.data.availability[day]}`)
-            let elRow = document.getElementById('row-' + day);
-            console.log(elRow);
-        }
+        let rowsCollection = document.querySelector('#details-availability-table table').rows;
+        [...rowsCollection].forEach((row, index) => {
+            if (index != 0) {
+                let day = row.id.slice(4);
+                [...row.children].forEach((child, index) => {
+                    if (index != 0) {
+                        let check = Teacher.data.availability[day][index-1];
+                        if (check) { child.innerHTML = '<span class="material-symbols-outlined">done</span>'; };
+                    }
+                })
+                
+            }
+        })
+        //// type of cover
+        let covers = Teacher.data.coverType.split(",");
+        covers = covers.map(e => e.trim());
+        let list = document.getElementById('coverType-list');
+        covers.forEach(cover => {
+            let newHtml = '<li class="coverType-list-item">' + cover + '</li>';
+            console.log(newHtml);
+            let newChild = document.createElement("li");
+            newChild.classList.add('coverType-list-item');
+            let newList = list.appendChild(newChild);
+            newList.innerText = cover;
+        });
+
 
     },
 
@@ -28,6 +49,7 @@ const Details = {
         Details.el.email = document.getElementById('details-email');
         Details.el.phone = document.getElementById('details-phone');
         Details.el.centre = document.getElementById('details-centre');
+        Details.el.coverType = document.getElementById('details-coverType');
     }
 
 }
@@ -98,7 +120,7 @@ const init = async () => {
     Details.init();
 
     /// simulate server call and getting Teacher class
-    delay(0, 'Making call to server').then(() => {
+    delay(3000, 'Making call to server').then(() => {
         console.log('Received response from server');
         Teacher.data = TestTeacherData_EXISTS;
         console.log(Teacher.data);
@@ -142,7 +164,7 @@ const TestTeacherData_EXISTS = {
         saturday: [false, true, false],
         sunday: [false, true, false]
     },
-    type: null
+    coverType: "ILA / OLA Classes, Public School"
 }
 
 
