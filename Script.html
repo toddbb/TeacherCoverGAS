@@ -1,0 +1,152 @@
+<script>
+
+/*********************************************************/
+/**              Teacher                                **/
+/*********************************************************/
+const Teacher = {
+
+  el: {},
+
+  data: {},
+
+  updateTeacherSettings: () => {
+    console.log(Teacher.data.name);
+    console.log(Teacher.data.email);
+    console.log(Teacher.data.phone);
+  },
+
+  init: () => {
+  }
+}
+
+
+
+/*********************************************************/
+/**              User Interface (UI)                    **/
+/*********************************************************/
+const Ui = {
+
+  el: {},
+
+  showMain: () => {
+    Ui.el.main.classList.remove('nodisplay');
+  },
+
+  hideMain: () => {
+    Ui.el.main.classList.contains('nodisplay') || Ui.el.main.classList.add('nodisplay');
+  },
+
+  showLoader: () => {
+    Ui.el.loader.classList.remove('nodisplay');
+  },
+
+  hideLoader: () => {
+        Ui.el.loader.classList.contains('nodisplay') || Ui.el.loader.classList.add('nodisplay');
+  },
+
+  showDetails: () => {
+    //TO DO: show the detail div
+    console.log(`TO DO: show the 'detail' div here...`);
+  },
+  
+  showSignup: () => {
+    //TO DO: show the form div
+    console.log(`Teacher.data = ${JSON.stringify(Teacher.data)}`);
+    console.log(`TO DO: show the 'signup' div here...`);
+  },
+
+  init: () => {
+    Ui.el.main = document.getElementsByClassName("main")[0];
+    Ui.el.loader = document.getElementsByClassName("loader")[0];
+  }
+}
+
+
+
+
+///////////////////////////  ALL CODE BELOW SPECIFIC TO GAS. DO NOT EDIT!!!  ///////////////////////////////////
+
+/*********************************************************/
+/**                CALLS TO THE SERVER                  **/
+/*********************************************************/
+const Server = {
+
+  getEmail: () => {
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler(reject)
+        .getUserEmail();
+    });
+  },
+
+  getUserData: (email) => {
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler(reject)
+        .getUserDataFromTable(email);
+    });
+  }
+
+
+}
+
+
+
+
+
+/*********************************************************/
+/**               INITIALIZATIONS                       **/
+/*********************************************************/
+const init = async () => {
+  Ui.init();
+  Teacher.init();
+
+  try {
+
+    Teacher.data = await Server.getUserData();
+    console.log(`data = ${JSON.stringify(Teacher.data)}`);
+
+    Ui.hideLoader();
+
+    // if UserData has a "name" assigned, then it exists in the table
+    if (Teacher.data.name) {
+      Ui.showDetails();
+    } else {
+      Ui.showSignup()
+    }
+
+    Teacher.updateTeacherSettings();
+    Ui.showMain();
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+
+}
+
+init();
+
+
+
+/*********************************************************/
+/**                  TESTING ONLY                       **/
+/*********************************************************/
+function getData() {
+  google.script.run
+    .withSuccessHandler(function(response) {
+      alert('Data from Sheet: ' + response);
+      return response;
+    })
+    .getData();
+}
+
+function setData() {
+  const dataToSet = ["Todd", "todd@ilavietnam.edu.vn", "082 333 4444"];
+  google.script.run.setData(dataToSet);
+}
+
+
+
+</script>

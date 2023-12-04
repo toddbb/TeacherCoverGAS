@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>ILA Cover Manager</title>
+    <!-- <?!= include('Stylesheet'); ?> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dev/style.css">
+    
+  </head>
+  <body>
+    <header class="header">
+      <img src="https://ila.edu.vn/tieng-anh-cho-be/themes/ila-theme-2023/assets/images/logo-ila.png" alt="" width="52" height="41">        
+      <h1>ILA Cover Manager</h1>
+    </header>
+
+    <main>
+
+      <section class="section-details nodisplay">
+        <div class="details-status">
+          <h3>Congratulations! You are registered for cover classes</h3>
+          <h5>See the details below. You can edit or unregister at anytime.</h5>
+        </div>
+        <div class="details-container">
+          <div class="details-row">
+            <div class="details-row-title">Name</div>
+            <div class="details-row-text" id="details-name"></div>
+          </div>
+          <div class="details-row">
+            <div class="details-row-title">Email</div>
+            <div class="details-row-text" id="details-email"></div>
+          </div>
+          <div class="details-row">
+            <div class="details-row-title">Phone Number</div>
+            <div class="details-row-text" id="details-phone"></div>
+          </div>
+
+
+        </div>
+
+      </section>
+
+      <section class="section-signup nodisplay">
+
+      </section>
+
+      <section class="section-form nodisplay">
+
+      </section>
+
+      <section class="section-status nodisplay"></section>
+      
+  
+      <section class="section-loader">
+        <div class="loader-text">
+          <p>Loading...</p>
+          <p>This should only take a few seconds.</p>
+        </div>
+        <div class="loader"></div>
+      </section>
+
+      <section class="section-dev nodisplay">
+        <button onclick="getData()">Get Data</button>
+        <button onclick="setData()">Set Data</button>
+      </section>
+
+    </main>
+    
+    <!-- <?!= include('Script'); ?> -->
+    <script src="dev/script.js"></script>
+  </body>
+</html>
+

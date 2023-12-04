@@ -1,0 +1,23 @@
+# Ignore all files in the 'node_modules' directory
+node_modules/**
+
+# Ignore all '.md' markdown files
+**/*.md
+
+# Ignore specific configuration files
+.gitignore
+.clasp.json
+.eslintrc.js
+.prettierrc
+package.json
+package-lock.json
+tsconfig.json
+
+# Ignore all '.log' files
+**/*.log
+
+# Ignore files in a 'tests' directory
+tests/**
+
+# Ignore files in a 'dev' directory
+dev/**

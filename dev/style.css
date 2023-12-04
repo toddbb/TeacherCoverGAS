@@ -1,0 +1,122 @@
+:root {
+    
+}
+
+none {
+    outline: 3px solid yellow;
+}
+
+
+/***********************************************/
+/**      CLASSES: general classes              */
+/***********************************************/
+h1, h2, h3, h4, h5, h6, p, span {
+    text-align: center;
+    margin: 5px 0;
+}
+
+section { width: 100%; }
+
+
+/***********************************************/
+/**         BODY, MAIN, AND HEADER             */
+/***********************************************/
+
+body {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    height: 100vh;
+    margin: 0;
+    padding: 0 5px;
+    background-color: #2b378b;
+    box-sizing: border-box;
+    font-family: 'Mulish', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header, main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #FAFAFA;
+}
+
+/***********************************************/
+/**             HEADER                         */
+/***********************************************/
+header {
+    align-items: center;
+}
+header * {
+    margin: 0 20px;
+}
+
+
+/***********************************************/
+/**             Section: DETAIL                */
+/***********************************************/
+
+.details-container { 
+    margin: 25px 40px 10px 40px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 4px -2px #999;
+}
+
+.details-row { margin-top: 10px; }
+.details-row-title { font-weight: bold; }
+.details-row-text { font-size: 0.9rem; }
+
+/***********************************************/
+/**             Section: LOADER                */
+/***********************************************/
+.section-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-loader * {
+    margin: 5px 0;
+    text-align: center;
+}
+
+.loader {
+    margin: 10px;
+    border: 5px solid #f3f3f3; /* Light grey border */
+    border-top: 5px solid #3498db; /* Blue border */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/***********************************************/
+/**   CLASSES: overriding all other classes    */
+/***********************************************/
+.nodisplay {
+    display: none;
+}
+
+
+
+/***********************************************/
+/**                 RESPONSIVE                 */
+/***********************************************/
+
+@media (max-width: 400px) {
+    .header, .main {
+      padding: 0 20px;
+    }
+  }
