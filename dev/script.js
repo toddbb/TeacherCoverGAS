@@ -1,3 +1,20 @@
+/*********************************************************/
+/**               Signup Section                       **/
+/*********************************************************/
+const Signup = {
+
+    el: {},
+    button: {},
+
+    init: () => {
+        Signup.button.register = document.getElementsByClassName('btn-signup')[0];
+
+        Signup.button.register.addEventListener('click', () => {
+            Ui.hideSignup();
+            Ui.showForm();
+        })
+    }
+}
 
 
 /*********************************************************/
@@ -6,6 +23,8 @@
 const Details = {
 
     el: {},
+
+    button: {},
 
     updateHtml: () => {
         Details.el.name.innerText = Teacher.data.name;
@@ -31,8 +50,6 @@ const Details = {
         covers = covers.map(e => e.trim());
         let list = document.getElementById('coverType-list');
         covers.forEach(cover => {
-            let newHtml = '<li class="coverType-list-item">' + cover + '</li>';
-            console.log(newHtml);
             let newChild = document.createElement("li");
             newChild.classList.add('coverType-list-item');
             let newList = list.appendChild(newChild);
@@ -50,10 +67,41 @@ const Details = {
         Details.el.phone = document.getElementById('details-phone');
         Details.el.centre = document.getElementById('details-centre');
         Details.el.coverType = document.getElementById('details-coverType');
-    }
+        Details.button.edit = document.getElementById('btn-details-edit');
+        Details.button.unregister = document.getElementById('btn-details-unregister');
 
+        Details.button.edit.addEventListener('click', () => {
+            Ui.hideDetails();
+            Ui.showForm();
+        });
+        Details.button.unregister.addEventListener('click', () => {
+            Ui.hideDetails();
+            Ui.showUnregister();
+        });
+
+    }
 }
 
+/*********************************************************/
+/**               Unregister                            **/
+/*********************************************************/
+const Unregister = {
+    
+    button: {},
+
+    exit: () => {
+        Ui.hideUnregister();
+        Ui.showSignup();
+    },
+
+    init: () => {
+        Unregister.button.exit = document.getElementById('btn-unregister-exit');
+        
+        Unregister.button.exit.addEventListener('click', () => {
+            Unregister.exit()
+        });
+    }
+}
 
 /*********************************************************/
 /**              Teacher                                **/
@@ -73,6 +121,8 @@ const Ui = {
   hideLoader: () => { setDisplay(Ui.el.sectionLoader, 'hide'); },
   showDetails: () => { setDisplay(Ui.el.sectionDetails, 'show'); },
   hideDetails: () => { setDisplay(Ui.el.sectionDetails, 'hide'); },  
+  showUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'show'); },
+  hideUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'hide'); },  
   showSignup: () => { setDisplay(Ui.el.sectionSignup, 'show'); },
   hideSignup: () => { setDisplay(Ui.el.sectionSignup, 'hide'); },
   showForm: () => { setDisplay(Ui.el.sectionForm, 'show'); },
@@ -85,6 +135,7 @@ const Ui = {
   init: () => {
     Ui.el.sectionLoader = document.getElementsByClassName("section-loader")[0];
     Ui.el.sectionDetails = document.getElementsByClassName("section-details")[0];
+    Ui.el.sectionUnregister = document.getElementsByClassName("section-unregister")[0];
     Ui.el.sectionSignup = document.getElementsByClassName("section-signup")[0];
     Ui.el.sectionForm = document.getElementsByClassName("section-form")[0];
     Ui.el.sectionStatus = document.getElementsByClassName("section-status")[0];
@@ -118,12 +169,15 @@ function setDisplay(el, action) {
 const init = async () => {
     Ui.init();
     Details.init();
+    Unregister.init();
+    Signup.init();
+
 
     /// simulate server call and getting Teacher class
-    delay(3000, 'Making call to server').then(() => {
+    delay(2000, 'Making call to server').then(() => {
         console.log('Received response from server');
         Teacher.data = TestTeacherData_EXISTS;
-        console.log(Teacher.data);
+        console.log(JSON.stringify(Teacher.data));
         Ui.hideLoader();
 
         // if UserData has a "name" assigned, then it exists in the table
@@ -169,9 +223,9 @@ const TestTeacherData_EXISTS = {
 
 
 const TestTeacherData_NONE = {
-    name: "Freddie Mercury",
+    name: "",
     email: "freddie@mymail.net",
-    phone: "012 345 6789"
+    phone: ""
 }
   
   

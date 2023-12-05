@@ -1,8 +1,8 @@
 :root {
-    
+    --color-ila: #2b378b;
 }
 
-none {
+.none {
     outline: 3px solid yellow;
 }
 
@@ -13,6 +13,15 @@ none {
 h1, h2, h3, h4, h5, h6, p, span {
     text-align: center;
     margin: 5px 0;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #444;
+}
+
+th, td {
+    padding: 0 5px;
 }
 
 section { 
@@ -26,7 +35,38 @@ section {
   'FILL' 0,
   'wght' 400,
   'GRAD' 0,
-  'opsz' 24
+  'opsz' 24;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.btn {    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 130px;
+    margin: 0 20px;
+    padding: 3px;
+    background-color: var(--color-ila);
+    border-radius: 7px;
+    border: none;
+    font-size: 14px;
+    color: #F9F9F9;
+    cursor: pointer;
+}
+
+.btn > span {
+    color: #F9F9F9;
+}
+
+.btn > * {
+    margin: 5px;
+}
+
+.btn:hover {
+    box-shadow: 0 0 2px 0px darkblue;
+    background-color: darkblue;
 }
 
 
@@ -41,7 +81,7 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0 5px;
-    background-color: #2b378b;
+    background-color: var(--color-ila);
     box-sizing: border-box;
     font-family: 'Mulish', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -64,6 +104,84 @@ header {
 }
 header * {
     margin: 0 20px;
+}
+
+/***********************************************/
+/**             Section: SIGNUP                */
+/***********************************************/
+.section-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 30px;
+}
+
+.signup-instructions h3 { 
+    margin: 0 0 0px 20px;
+    font-size: 1.3rem;
+}
+
+.signup-instruct-row {
+    display: flex;
+    margin: 35px;
+    align-items: center;
+    font-size: 1.15rem;
+}
+
+.signup-instruct-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 35px;
+    width: 35px;
+    margin: 0 20px 0 0;
+    padding: 5px;
+    border-radius: 50%;
+    background-color: #199319;
+    color: #F0F0F0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 0 7px -3px #666;
+}
+
+.signup-instruct-text {
+    flex-basis: fit-content;
+    flex-shrink: 1;
+}
+
+.btn-signup {
+    width: 160px;
+    margin-top: 20px;
+    background-color: green;
+    font-size: 1rem;
+}
+
+.btn-signup:hover {
+    background-color: rgb(7, 150, 7);
+}
+
+.signup-faq-container {
+    margin: 25px;
+}
+
+.signup-faq-container > h4 {
+    text-align: left;
+    font-size: 1.1rem;
+}
+
+.faq-row {
+    margin: 15px 0;
+}
+
+.faq-title {
+    font-weight: bold;
 }
 
 
@@ -118,6 +236,47 @@ header * {
 
 .availability-table-cell {
     text-align: center;
+}
+
+.details-controls {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#btn-details-unregister {
+    background-color: #ba2f26;
+}
+#btn-details-unregister:hover {
+    background-color: #db392d;
+    box-shadow: 0 0 2px 0 #db392d;
+}
+
+#btn-details-edit {
+    background-color: #64656f;
+}
+#btn-details-edit:hover {
+    background-color: #7c7d8a;
+    box-shadow: 0 0 2px 0px #7c7d8a;
+}
+
+
+
+
+/***********************************************/
+/**             Section: UNREGISTER            */
+/***********************************************/
+.section-unregister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.section-unregister .btn {
+    width: 150px;
+    margin-top: 100px; 
 }
 
 /***********************************************/

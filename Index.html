@@ -14,7 +14,7 @@
   <body>
     <header class="header">
       <img src="https://ila.edu.vn/tieng-anh-cho-be/themes/ila-theme-2023/assets/images/logo-ila.png" alt="" width="52" height="41">        
-      <h1>ILA Cover Manager</h1>
+      <h1>Cover Registration</h1>
     </header>
 
     <main>
@@ -23,7 +23,7 @@
 
         <div class="details-status">
           <h3>You are currently registered for cover classes</h3>
-          <h5>See the details below. You can edit or unregister at anytime.</h5>
+          <h4>See the details below. You can edit or unregister at anytime.</h4>
         </div>
 
         <div class="details-container">
@@ -99,25 +99,83 @@
             </div>
           </div>
           <div class="details-row">
-            <div class="details-row-title">Type of Cover</div>
+            <div class="details-row-title">Type(s) of Cover</div>
             <div class="details-row-text" id="details-coverType">
               <ul id="coverType-list"></ul>
             </div>
           </div>
+          <div class="details-controls">
+            <button class="btn" id="btn-details-edit">Edit</button>
+            <button class="btn" id="btn-details-unregister">Unregister</button>
+          </div>
         </div>
       </section>
 
-      <section class="section-signup nodisplay"></section>
+      <section class="section-unregister nodisplay">
+        <h1>We're sorry to see you go.</h1>
+        <h1>Please come again soon :)</h1>
+        <div class="btn" id="btn-unregister-exit">
+          <span class="btn-text">Home Page</span>
+          <span class="material-symbols-outlined">home</span>
+        </div>
+      </section>
 
-      <section class="section-form nodisplay"></section>
+      <section class="section-signup nodisplay">
+        <div class="signup-status">
+          <h2>Register for cover classes here.</h2>
+        </div>
+        <div class="signup-instructions">
+          <h3>How does it work?</h3>
+          <div class="signup-instruct-container">
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">1</div>
+              <div class="signup-instruct-text">Enter your contact information on this site. You can specify preferences about cover classes, such as availability and the types of classes.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">2</div>
+              <div class="signup-instruct-text">Our Scheduling Team will periodically contact you about cover classes that fit your preferences. There is no obligation to cover every class.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">3</div>
+              <div class="signup-instruct-text">If you do accept a cover class, the Scheduler will send you the details via email.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">4</div>
+              <div class="signup-instruct-text">Teach!</div>
+            </div>
+          </div>
+        </div>
+        <div class="btn btn-signup">Sign Me Up!</div>
+        <div class="signup-faq-container">
+          <h4>FAQs</h4>
+          <div class="faq-row">
+            <div class="faq-title">Are the cover classes for teachers on sick leave or annual leave?</div>
+            <div class="faq-text">Both. You could be contacted in either situation. If it's for annual leave, the Scheduler might ask if you can teach several lessons. Again, there is no obligation to cover all classes.</div>
+          </div>
+          <div class="faq-row">
+            <div class="faq-title">Do I have to accept all covers?</div>
+            <div class="faq-text">No. However, if you are registered here, we ask that you accept most covers proposed to you.</div>
+          </div>
+          <div class="faq-row">
+            <div class="faq-title">Will lesson plans be provided for me?</div>
+            <div class="faq-text">In most cases, the covers are arranged in advance, so lesson plans would not be provided. For emergency covers, that Academic Team or other teachers will try to support you with a lesson plan.</div>
+          </div>
+        </div>
+      </section>
 
-      <section class="section-status nodisplay"></section>
+      <section class="section-form nodisplay">
+        <h1>This is the form page</h1>
+      </section>
+
+      <section class="section-status nodisplay">
+        <h1>This is the status page</h1>
+      </section>
       
   
       <section class="section-loader">
         <div class="loader-text">
-          <p>Loading...</p>
-          <p>This should only take a few seconds.</p>
+          <h3>Loading...</h3>
+          <h3>This should only take a few seconds.</h3>
         </div>
         <div class="loader"></div>
       </section>
