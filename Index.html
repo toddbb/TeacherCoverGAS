@@ -186,17 +186,36 @@
 
             <!-- Centre -->
             <label for="centre" id="label-centre" class="user-form-label">Centre:</label>
-            <input type="text" id="user-form-centre" class="user-form-input">       
+            <select type="text" id="user-form-centre" class="user-form-input">
+              <option selected></option>
+            </select>       
             <span class="user-form-description"></span><br>
         
             <!-- coverType Dropdown -->
             <label for="coverType" id="label-coverType" class="user-form-label">Cover Type:</label>
-            <select id="user-form-coverType" class="user-form-input">
-                <option>Type A</option>
-                <option>Type B</option>
-                <option>Type C</option>
-            </select>            
-            <span class="user-form-description">You will only be contacted for these types classes.</span><br>
+            <div id="user-form-coverType" class="user-form-input">
+              <div class="coverType-check-group">
+                <input type="checkbox" id='centre-classes' class="coverType-check">
+                <label for="centre-classes">ILA/OLA Centre Classes</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='public-classes' class="coverType-check">
+                <label for="public-classes">Public School Classes</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='pt-classes' class="coverType-check">
+                <label for="pt-classes">Placement Testing *</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='ea-classes' class="coverType-check">
+                <label for="ea-classes">Adult / IELTS Classes *</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='corp-classes' class="coverType-check">
+                <label for="corp-classes">Corporate Classes *</label>
+              </div>
+            </div>            
+            <span class="user-form-description">You will only be contacted for these types classes. (*) must be ILA standardized to cover these.</span><br>
         
             <!-- Availability Table -->
             <label for="coverType" id="label-coverType" class="user-form-label">Availability:</label>

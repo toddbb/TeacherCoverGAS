@@ -25,22 +25,116 @@ const Form = {
     input: {},
     button: {},
 
-    populateCentreDropdown: () => {
-        
+    populateCentreDropdown: (centres) => {
+        centres.forEach(centre => {
+            let html = "<option>" + centre + "</option>";
+            Form.input.centre.insertAdjacentHTML('beforeend', html);
+        })
     },
 
     populateFields: () => {
         for (prop in Teacher.data) {
             let val = Teacher.data[prop];
             console.log(`${prop} = ${val}`);
-            if (val && val.length > -1) {
+            //if (val && val.length > -1) {
                 Form.input[prop].value = val;
-            }
+            //}
+        }
+
+        Form.setCoverTypes();
+        Form.setAvail();
+
+        if (Teacher.userEmail) {
+            Form.input.email.value = Teacher.userEmail;
         }
     },
 
+    clearAll: () => {
+        let allInputs = document.querySelectorAll('.section-form form input');
+        allInputs.forEach(input => input.value = null);
+        let allSelects = document.querySelectorAll('.section-form form select');
+        allSelects.forEach(select => select.value = null);
+        let allChecks = document.querySelectorAll(".section-form input[type='checkbox']")
+        allChecks.forEach(check => check.checked = false);
+        
+    },
 
-    init: () => {
+    stripAsteriks: (text) => {
+        return text.indexOf('*') > 0 ? text.slice(0,-2) : text;
+    },
+
+    setCoverTypes: () => {
+
+        if (!Teacher.data.coverType) { return };
+
+        const labels = document.querySelectorAll('#user-form-coverType label');
+        Teacher.data.coverType.forEach(cover => {
+            labels.forEach(label => {
+                let text = Form.stripAsteriks(label.innerText);
+                if (text === cover) {
+                    let id = label.htmlFor;
+                    document.getElementById(id).checked = true;
+                }
+            })
+        })
+    },
+
+    setAvail: () => {
+        //// TO DO: set the availability here based on the Teacher.data.availability
+    },
+
+    getCoverTypesResponses: () => {
+        let types = document.querySelectorAll(".coverType-check-group input[type='checkbox']");
+        let checked = [...types].filter(type => type.checked);
+        return checked.map(el => {
+            let text = el.nextSibling.nextSibling.innerText;
+            return Form.stripAsteriks(text);
+        })
+        
+    },
+
+    getAvailResponses: () => {
+        //// availability
+        let elChecks = document.querySelectorAll('#user-form-availability td input');
+        objAvail = {};
+        elChecks.forEach(check => {
+            let index = check.id.indexOf("day");
+            let day = check.id.slice(0, index + 3);
+            if (!objAvail[day]) { objAvail[day] = [] };
+            objAvail[day].push(check.checked);
+        })
+
+        return objAvail;
+    },
+
+    validateResponses: (resp) => {
+        return false;
+    },
+
+    submit: () => {
+        //// get values (except 'coverTypes' and 'availability')
+        let responses = {};
+        for (prop in Form.input) {
+            let val = Form.input[prop].value;
+            responses[prop] = val;
+        }      
+        responses.availability = Form.getAvailResponses();
+        responses.coverType = Form.getCoverTypesResponses();
+
+        
+        let resp = Form.validateResponses(responses);
+        console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
+
+        if (resp) {
+            Ui.hideForm();
+            Ui.showLoader();
+            Server.writeUserData(resp);
+        }
+        
+    },
+
+
+    init: (centres) => {
         Form.input.name = document.getElementById('user-form-name');
         Form.input.email = document.getElementById('user-form-email');
         Form.input.phone = document.getElementById('user-form-phone');
@@ -51,7 +145,18 @@ const Form = {
 
         Form.button.submit = document.getElementById('user-form-submit');
 
-        Form.populateCentreDropdown();
+        Form.populateCentreDropdown(centres);
+        Form.populateFields();
+
+        //// Events
+        Form.button.submit.addEventListener('click', () => { Form.submit() });
+        /* let checkLabels = document.querySelectorAll('#user-form-coverType label');
+        [...checkLabels].forEach(el => {
+            el.addEventListener('click', (e) => {
+                console.log(e);
+            })
+        }); */
+        
     }
 }
 
@@ -84,10 +189,10 @@ const Details = {
             }
         })
         //// type of cover
-        let covers = Teacher.data.coverType.split(",");
-        covers = covers.map(e => e.trim());
+        //let covers = Teacher.data.coverType.split(",");
+        //covers = covers.map(e => e.trim());
         let list = document.getElementById('coverType-list');
-        covers.forEach(cover => {
+        Teacher.data.coverType.forEach(cover => {
             let newChild = document.createElement("li");
             newChild.classList.add('coverType-list-item');
             let newList = list.appendChild(newChild);
@@ -112,7 +217,8 @@ const Details = {
         });
         Details.button.unregister.addEventListener('click', () => {
             Ui.hideDetails();
-            Ui.showUnregister();
+            Unregister.deleteUser();
+            Ui.showSignup();
         });
 
     }
@@ -130,19 +236,27 @@ const Unregister = {
         Ui.showSignup();
     },
 
+    deleteUser: () => {
+        Teacher.data = {};
+        ///TO DO: remove user from Sheets        
+        ///Server.writeUserData();
+        Form.clearAll();
+    },
+
     init: () => {
         Unregister.button.exit = document.getElementById('btn-unregister-exit');
         
-        Unregister.button.exit.addEventListener('click', () => {
-            Unregister.exit()
-        });
+        Unregister.button.exit.addEventListener('click', () => { Unregister.exit() });
     }
 }
 
 /*********************************************************/
 /**              Teacher                                **/
 /*********************************************************/
-const Teacher = { data: {} };
+const Teacher = {    
+    data: {},
+    userEmail: null
+};
 
 
 
@@ -207,16 +321,31 @@ const init = async () => {
     Details.init();
     Unregister.init();
     Signup.init();
-    Form.init();
 
 
     /// simulate server call and getting Teacher class
     delay(0, 'Making call to server').then(() => {
+
         console.log('Received response from server');
-        Teacher.data = TestTeacherData_NONE;
+
+        dev_isTeacherExist = false;
+
+        if (dev_isTeacherExist) {
+            Teacher.data = TestTeacherData_EXISTS.data;
+            Teacher.userEmail = TestTeacherData_EXISTS.userEmail;
+        } else {
+            Teacher.data = TestTeacherData_NONE.data;
+            Teacher.userEmail = TestTeacherData_NONE.userEmail;
+        }
+
         console.log(JSON.stringify(Teacher.data));
-        Form.populateFields();
+
+        //// TO DO: this is where the server would also get the list of centres from the server /////
+
+        Form.init(allCentres);
         Ui.hideLoader();
+
+        
 
         // if UserData has a "name" assigned, then it exists in the table
         if (Teacher.data.name) {
@@ -235,6 +364,19 @@ init()
 
 
 ///////////// SIMULATED FUNCTIONS AND DATA FOR DEV ONLY //////////////////////////
+
+const Server = {
+
+    writeUserData: async (resp) => {
+        delay(2000, "Sending Resposnes to Server").then(() => {
+            console.log("Successfully sent to the server!");
+            Ui.hideLoader();
+            Ui.showDetails();
+        });
+    }
+}
+
+
 function delay(time, msg) {
     return new Promise(resolve => {
         console.log(msg);
@@ -244,32 +386,30 @@ function delay(time, msg) {
 
 
 const TestTeacherData_EXISTS = {
-    name: "Freddie Mercury",
-    email: "freddie@mymail.net",
-    phone: "012 345 6789",
-    centre: "TC-HCMC99",
-    availability: {
-        monday: [false, false, true],
-        tuesday: [false, false, false],
-        wednesday: [true, true, true],
-        thursday: [true, true, false],
-        friday: [false, false, false],
-        saturday: [false, true, false],
-        sunday: [false, true, false]
-    },
-    coverType: "ILA / OLA Classes, Public School",
-    endDate: "05/06/2024"
+    userEmail: "freddie@mymail.net",
+    data: {
+        name: "Freddie Mercury",
+        email: "freddie@mymail.net",
+        phone: "012 345 6789",
+        centre: "TC-HCMC99",
+        availability: {
+            monday: [false, false, true],
+            tuesday: [false, false, false],
+            wednesday: [true, true, true],
+            thursday: [true, true, false],
+            friday: [false, false, false],
+            saturday: [false, true, false],
+            sunday: [false, true, false]
+        },
+        coverType: ["ILA / OLA Classes", "Public School Classes"],
+        endDate: "05/06/2024"
+    }
 }
 
 
 const TestTeacherData_NONE = {
-    name: null,
-    email: "freddie@mymail.net",
-    phone: null,
-    centre: null,
-    availability: null,
-    coverType: null,
-    endDate: null
+    userEmail: "freddie@mymail.net",
+    data: {}
 }
 
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
