@@ -164,7 +164,78 @@
       </section>
 
       <section class="section-form nodisplay">
-        <h1>This is the form page</h1>
+        <div class="form-status">
+          <h3 class="form-status-title">Complete the form below to register for cover classes.</h3>
+        </div>
+        <div class="user-form-container">
+          <form>
+            <!-- Name Field -->
+            <label for="name" id="label-name" class="user-form-label">Name:</label>
+            <input type="text" id="user-form-name" class="user-form-input">       
+            <span class="user-form-description"></span><br>
+        
+            <!-- Email Field -->
+            <label for="email" id="label-email" class="user-form-label">Email:</label>
+            <input type="text" id="user-form-email" class="user-form-input" disabled>       
+            <span class="user-form-description">If this is not your email, you need to log in using your ILA email.</span><br>
+        
+            <!-- Phone Field -->
+            <label for="phone" id="label-phone" class="user-form-label">Phone:</label>
+            <input type="text" id="user-form-phone" class="user-form-input">       
+            <span class="user-form-description"></span><br>
+
+            <!-- Centre -->
+            <label for="centre" id="label-centre" class="user-form-label">Centre:</label>
+            <input type="text" id="user-form-centre" class="user-form-input">       
+            <span class="user-form-description"></span><br>
+        
+            <!-- coverType Dropdown -->
+            <label for="coverType" id="label-coverType" class="user-form-label">Cover Type:</label>
+            <select id="user-form-coverType" class="user-form-input">
+                <option>Type A</option>
+                <option>Type B</option>
+                <option>Type C</option>
+            </select>            
+            <span class="user-form-description">You will only be contacted for these types classes.</span><br>
+        
+            <!-- Availability Table -->
+            <label for="coverType" id="label-coverType" class="user-form-label">Availability:</label>
+            <table id="user-form-availability" class="user-form-input">
+                <tr>
+                    <th>Day / Time</th>
+                    <th>Morning</th>
+                    <th>Afternoon</th>
+                    <th>Evening</th>
+                </tr>
+                <tr>
+                    <td>Monday</td>
+                    <td><input type="checkbox" id="mondayMorning"></td>
+                    <td><input type="checkbox" id="mondayAfternoon"></td>
+                    <td><input type="checkbox" id="mondayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td><input type="checkbox" id="tuesdayMorning"></td>
+                    <td><input type="checkbox" id="tuesdayAfternoon"></td>
+                    <td><input type="checkbox" id="tuesdayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Sunday</td>
+                    <td><input type="checkbox" id="sundayMorning"></td>
+                    <td><input type="checkbox" id="sundayAfternoon"></td>
+                    <td><input type="checkbox" id="sundayEvening"></td>
+                </tr>
+            </table>       
+            <span class="user-form-description">You can change this anytime.</span><br>
+
+            <!-- endDate Field -->
+            <label for="endDate" id="label-endDate" class="user-form-label">End Registration Date:</label>
+            <input type="date" id="user-form-endDate" class="user-form-input">       
+            <span class="user-form-description">You will be automatically unregistered past this date. You can leave this blank to stay registered indefinitely.</span><br>
+        
+          </form>
+          <div class="btn btn-submit" id="user-form-submit">Submit</div>
+        </div>
       </section>
 
       <section class="section-status nodisplay">

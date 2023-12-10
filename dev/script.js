@@ -18,6 +18,44 @@ const Signup = {
 
 
 /*********************************************************/
+/**                 Form Section                        **/
+/*********************************************************/
+const Form = {
+    el: {},
+    input: {},
+    button: {},
+
+    populateCentreDropdown: () => {
+        
+    },
+
+    populateFields: () => {
+        for (prop in Teacher.data) {
+            let val = Teacher.data[prop];
+            console.log(`${prop} = ${val}`);
+            if (val && val.length > -1) {
+                Form.input[prop].value = val;
+            }
+        }
+    },
+
+
+    init: () => {
+        Form.input.name = document.getElementById('user-form-name');
+        Form.input.email = document.getElementById('user-form-email');
+        Form.input.phone = document.getElementById('user-form-phone');
+        Form.input.centre = document.getElementById('user-form-centre');
+        Form.input.coverType = document.getElementById('user-form-coverType');
+        Form.input.availability = document.getElementById('user-form-availability');
+        Form.input.endDate = document.getElementById('user-form-endDate');
+
+        Form.button.submit = document.getElementById('user-form-submit');
+
+        Form.populateCentreDropdown();
+    }
+}
+
+/*********************************************************/
 /**               Details Section                       **/
 /*********************************************************/
 const Details = {
@@ -58,8 +96,6 @@ const Details = {
 
 
     },
-
-
 
     init: () => {
         Details.el.name = document.getElementById('details-name');
@@ -171,13 +207,15 @@ const init = async () => {
     Details.init();
     Unregister.init();
     Signup.init();
+    Form.init();
 
 
     /// simulate server call and getting Teacher class
-    delay(2000, 'Making call to server').then(() => {
+    delay(0, 'Making call to server').then(() => {
         console.log('Received response from server');
-        Teacher.data = TestTeacherData_EXISTS;
+        Teacher.data = TestTeacherData_NONE;
         console.log(JSON.stringify(Teacher.data));
+        Form.populateFields();
         Ui.hideLoader();
 
         // if UserData has a "name" assigned, then it exists in the table
@@ -185,7 +223,8 @@ const init = async () => {
             Details.updateHtml();
             Ui.showDetails();
         } else {
-            Ui.showSignup()
+            ///Ui.showSignup()
+            Ui.showForm(); /// For dev of Form only; delete when done
         }
     });
 
@@ -218,14 +257,21 @@ const TestTeacherData_EXISTS = {
         saturday: [false, true, false],
         sunday: [false, true, false]
     },
-    coverType: "ILA / OLA Classes, Public School"
+    coverType: "ILA / OLA Classes, Public School",
+    endDate: "05/06/2024"
 }
 
 
 const TestTeacherData_NONE = {
-    name: "",
+    name: null,
     email: "freddie@mymail.net",
-    phone: ""
+    phone: null,
+    centre: null,
+    availability: null,
+    coverType: null,
+    endDate: null
 }
+
+const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
   
   
