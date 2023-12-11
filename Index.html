@@ -17,7 +17,181 @@
       <h1>Cover Registration</h1>
     </header>
 
-    <main>
+    <main>     
+
+      <section class="section-signup nodisplay">
+        <div class="signup-status">
+          <h2 id="signup-status-title">You are currently not registered for cover classes. Register here!</h2>
+        </div>
+        <div class="signup-instructions">
+          <h3>How does it work?</h3>
+          <div class="signup-instruct-container">
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">1</div>
+              <div class="signup-instruct-text">Enter your contact information on this site. You can specify preferences about cover classes, such as availability and the types of classes.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">2</div>
+              <div class="signup-instruct-text">Our Scheduling Team will periodically contact you about cover classes that fit your preferences. There is no obligation to cover every class.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">3</div>
+              <div class="signup-instruct-text">If you do accept a cover class, the Scheduler will send you the details via email.</div>
+            </div>
+            <div class="signup-instruct-row">
+              <div class="signup-instruct-number">4</div>
+              <div class="signup-instruct-text">Teach!</div>
+            </div>
+          </div>
+        </div>
+        <div class="btn btn-signup">Sign Me Up!</div>
+        <div class="signup-faq-container">
+          <h4>FAQs</h4>
+          <div class="faq-row">
+            <div class="faq-title">Are the cover classes for teachers on sick leave or annual leave?</div>
+            <div class="faq-text">Both. You could be contacted in either situation. If it's for annual leave, the Scheduler might ask if you can teach several lessons. Again, there is no obligation to cover all classes.</div>
+          </div>
+          <div class="faq-row">
+            <div class="faq-title">Do I have to accept all covers?</div>
+            <div class="faq-text">No. However, if you are registered here, we ask that you accept <i>most</i> covers offered to you. If you are unable to many cover classes, we would need to remove you from the registration list.</div>
+          </div>
+          <div class="faq-row">
+            <div class="faq-title">Will lesson plans be provided for me?</div>
+            <div class="faq-text">In most cases, the covers are arranged in advance, so lesson plans would not be provided. For emergency covers, that Academic Team or other teachers will try to support you with a lesson plan.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-form nodisplay">
+        <div class="form-status">
+          <h3 class="form-status-title">Complete the form below to register for cover classes.</h3>
+          <h5><span class="required-asteriks">*</span> = Required</h5>
+        </div>
+        <div class="user-form-container">
+          <form>
+            <!-- Name Field -->
+            <div>
+              <label for="user-form-name" id="label-name" class="user-form-label">Name:</label>
+              <span class="required-asteriks">*</span>
+            </div>
+            <input type="text" id="user-form-name" class="user-form-input">       
+            <span class="user-form-description"></span><br>
+        
+            <!-- Email Field -->
+            <label for="user-form-email" id="label-email" class="user-form-label">Email:</label>
+            <span class="required-asteriks">*</span>
+            <input type="text" id="user-form-email" class="user-form-input" disabled>       
+            <span class="user-form-description">If this is not your email, you need to log in using your ILA email.</span><br>
+        
+            <!-- Phone Field -->
+            <label for="user-form-phone" id="label-phone" class="user-form-label">Phone:</label>
+            <span class="required-asteriks">*</span>
+            <input type="text" id="user-form-phone" class="user-form-input">       
+            <span class="user-form-description"></span><br>
+
+            <!-- Centre -->
+            <label for="user-form-centre" id="label-centre" class="user-form-label">Centre:</label>
+            <span class="required-asteriks">*</span>
+            <select type="text" id="user-form-centre" class="user-form-input">
+              <option selected></option>
+            </select>       
+            <span class="user-form-description">Your home centre in which you are based.</span><br>
+        
+            <!-- coverType Options -->
+            <div id="label-coverType" class="user-form-label div-label">Cover Type:</div>
+            <span class="required-asteriks">*</span>
+            <div id="user-form-coverType" class="user-form-input">
+              <div class="coverType-check-group">
+                <input type="checkbox" id='centre-classes' class="coverType-check">
+                <label for="centre-classes">ILA/OLA Centre Classes</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='public-classes' class="coverType-check">
+                <label for="public-classes">Public School Classes</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='pt-classes' class="coverType-check">
+                <label for="pt-classes">Placement Testing *</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='ea-classes' class="coverType-check">
+                <label for="ea-classes">Adult / IELTS Classes *</label>
+              </div>
+              <div class="coverType-check-group">
+                <input type="checkbox" id='corp-classes' class="coverType-check">
+                <label for="corp-classes">Corporate Classes *</label>
+              </div>
+            </div>            
+            <span class="user-form-description">(*) Must be ILA standardized to cover these.</span><br>
+        
+            <!-- Availability Table -->
+            <div id="label-coverType" class="user-form-label div-label">Availability:</div>
+            <span class="required-asteriks">*</span>
+            <table id="user-form-availability" class="user-form-input">
+                <tr>
+                    <th>Day / Time</th>
+                    <th>Morning</th>
+                    <th>Afternoon</th>
+                    <th>Evening</th>
+                </tr>
+                <tr>
+                    <td>Monday</td>
+                    <td><input type="checkbox" id="mondayMorning"></td>
+                    <td><input type="checkbox" id="mondayAfternoon"></td>
+                    <td><input type="checkbox" id="mondayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td><input type="checkbox" id="tuesdayMorning"></td>
+                    <td><input type="checkbox" id="tuesdayAfternoon"></td>
+                    <td><input type="checkbox" id="tuesdayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>
+                    <td><input type="checkbox" id="wednesdayMorning"></td>
+                    <td><input type="checkbox" id="wednesdayAfternoon"></td>
+                    <td><input type="checkbox" id="wednesdayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>
+                    <td><input type="checkbox" id="thursdayMorning"></td>
+                    <td><input type="checkbox" id="thursdayAfternoon"></td>
+                    <td><input type="checkbox" id="thursdayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td><input type="checkbox" id="fridayMorning"></td>
+                    <td><input type="checkbox" id="fridayAfternoon"></td>
+                    <td><input type="checkbox" id="fridayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Saturday</td>
+                    <td><input type="checkbox" id="saturdayMorning"></td>   
+                    <td><input type="checkbox" id="saturdayAfternoon"></td>
+                    <td><input type="checkbox" id="saturdayEvening"></td>
+                </tr>
+                <tr>
+                    <td>Sunday</td>
+                    <td><input type="checkbox" id="sundayMorning"></td>
+                    <td><input type="checkbox" id="sundayAfternoon"></td>
+                    <td><input type="checkbox" id="sundayEvening"></td>
+                </tr>
+            </table>       
+            <span class="user-form-description">You can change this anytime.</span><br>
+
+            <!-- endDate Field -->
+            <label for="user-form-endDate" id="label-endDate" class="user-form-label">End Registration Date:</label>
+            <input type="date" id="user-form-endDate" class="user-form-input">       
+            <span class="user-form-description">You will be automatically unregistered past this date. You can leave this blank to stay registered indefinitely.</span><br>
+        
+          </form>
+          <div class="form-controls">
+            <div class="btn btn-cancel" id="user-form-cancel">Cancel</div>
+            <div class="btn btn-submit" id="user-form-submit">Submit</div>
+          </div>
+        </div>
+      </section>
+
 
       <section class="section-details nodisplay">
 
@@ -104,6 +278,10 @@
               <ul id="coverType-list"></ul>
             </div>
           </div>
+          <div class="details-row details-endDate-row">
+            <div class="details-row-title">End Date:&nbsp;</div>
+            <div class="details-row-text" id="details-endDate"></div>
+          </div>
           <div class="details-controls">
             <button class="btn" id="btn-details-edit">Edit</button>
             <button class="btn" id="btn-details-unregister">Unregister</button>
@@ -112,172 +290,11 @@
       </section>
 
       <section class="section-unregister nodisplay">
-        <h1>We're sorry to see you go.</h1>
-        <h1>Please come again soon :)</h1>
+        <h1>Saying goodbye is never easy.</h1>
+        <h1>We hope you come back soon :)</h1>
         <div class="btn" id="btn-unregister-exit">
           <span class="btn-text">Home Page</span>
           <span class="material-symbols-outlined">home</span>
-        </div>
-      </section>
-
-      <section class="section-signup nodisplay">
-        <div class="signup-status">
-          <h2>Register for cover classes here.</h2>
-        </div>
-        <div class="signup-instructions">
-          <h3>How does it work?</h3>
-          <div class="signup-instruct-container">
-            <div class="signup-instruct-row">
-              <div class="signup-instruct-number">1</div>
-              <div class="signup-instruct-text">Enter your contact information on this site. You can specify preferences about cover classes, such as availability and the types of classes.</div>
-            </div>
-            <div class="signup-instruct-row">
-              <div class="signup-instruct-number">2</div>
-              <div class="signup-instruct-text">Our Scheduling Team will periodically contact you about cover classes that fit your preferences. There is no obligation to cover every class.</div>
-            </div>
-            <div class="signup-instruct-row">
-              <div class="signup-instruct-number">3</div>
-              <div class="signup-instruct-text">If you do accept a cover class, the Scheduler will send you the details via email.</div>
-            </div>
-            <div class="signup-instruct-row">
-              <div class="signup-instruct-number">4</div>
-              <div class="signup-instruct-text">Teach!</div>
-            </div>
-          </div>
-        </div>
-        <div class="btn btn-signup">Sign Me Up!</div>
-        <div class="signup-faq-container">
-          <h4>FAQs</h4>
-          <div class="faq-row">
-            <div class="faq-title">Are the cover classes for teachers on sick leave or annual leave?</div>
-            <div class="faq-text">Both. You could be contacted in either situation. If it's for annual leave, the Scheduler might ask if you can teach several lessons. Again, there is no obligation to cover all classes.</div>
-          </div>
-          <div class="faq-row">
-            <div class="faq-title">Do I have to accept all covers?</div>
-            <div class="faq-text">No. However, if you are registered here, we ask that you accept most covers proposed to you.</div>
-          </div>
-          <div class="faq-row">
-            <div class="faq-title">Will lesson plans be provided for me?</div>
-            <div class="faq-text">In most cases, the covers are arranged in advance, so lesson plans would not be provided. For emergency covers, that Academic Team or other teachers will try to support you with a lesson plan.</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section-form nodisplay">
-        <div class="form-status">
-          <h3 class="form-status-title">Complete the form below to register for cover classes.</h3>
-        </div>
-        <div class="user-form-container">
-          <form>
-            <!-- Name Field -->
-            <label for="name" id="label-name" class="user-form-label">Name:</label>
-            <input type="text" id="user-form-name" class="user-form-input">       
-            <span class="user-form-description"></span><br>
-        
-            <!-- Email Field -->
-            <label for="email" id="label-email" class="user-form-label">Email:</label>
-            <input type="text" id="user-form-email" class="user-form-input" disabled>       
-            <span class="user-form-description">If this is not your email, you need to log in using your ILA email.</span><br>
-        
-            <!-- Phone Field -->
-            <label for="phone" id="label-phone" class="user-form-label">Phone:</label>
-            <input type="text" id="user-form-phone" class="user-form-input">       
-            <span class="user-form-description"></span><br>
-
-            <!-- Centre -->
-            <label for="centre" id="label-centre" class="user-form-label">Centre:</label>
-            <select type="text" id="user-form-centre" class="user-form-input">
-              <option selected></option>
-            </select>       
-            <span class="user-form-description"></span><br>
-        
-            <!-- coverType Dropdown -->
-            <label for="coverType" id="label-coverType" class="user-form-label">Cover Type:</label>
-            <div id="user-form-coverType" class="user-form-input">
-              <div class="coverType-check-group">
-                <input type="checkbox" id='centre-classes' class="coverType-check">
-                <label for="centre-classes">ILA/OLA Centre Classes</label>
-              </div>
-              <div class="coverType-check-group">
-                <input type="checkbox" id='public-classes' class="coverType-check">
-                <label for="public-classes">Public School Classes</label>
-              </div>
-              <div class="coverType-check-group">
-                <input type="checkbox" id='pt-classes' class="coverType-check">
-                <label for="pt-classes">Placement Testing *</label>
-              </div>
-              <div class="coverType-check-group">
-                <input type="checkbox" id='ea-classes' class="coverType-check">
-                <label for="ea-classes">Adult / IELTS Classes *</label>
-              </div>
-              <div class="coverType-check-group">
-                <input type="checkbox" id='corp-classes' class="coverType-check">
-                <label for="corp-classes">Corporate Classes *</label>
-              </div>
-            </div>            
-            <span class="user-form-description">You will only be contacted for these types classes. (*) must be ILA standardized to cover these.</span><br>
-        
-            <!-- Availability Table -->
-            <label for="coverType" id="label-coverType" class="user-form-label">Availability:</label>
-            <table id="user-form-availability" class="user-form-input">
-                <tr>
-                    <th>Day / Time</th>
-                    <th>Morning</th>
-                    <th>Afternoon</th>
-                    <th>Evening</th>
-                </tr>
-                <tr>
-                    <td>Monday</td>
-                    <td><input type="checkbox" id="mondayMorning"></td>
-                    <td><input type="checkbox" id="mondayAfternoon"></td>
-                    <td><input type="checkbox" id="mondayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Tuesday</td>
-                    <td><input type="checkbox" id="tuesdayMorning"></td>
-                    <td><input type="checkbox" id="tuesdayAfternoon"></td>
-                    <td><input type="checkbox" id="tuesdayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Wednesday</td>
-                    <td><input type="checkbox" id="wednesdayMorning"></td>
-                    <td><input type="checkbox" id="wednesdayAfternoon"></td>
-                    <td><input type="checkbox" id="wednesdayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Thursday</td>
-                    <td><input type="checkbox" id="thursdayMorning"></td>
-                    <td><input type="checkbox" id="thursdayAfternoon"></td>
-                    <td><input type="checkbox" id="thursdayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Friday</td>
-                    <td><input type="checkbox" id="fridayMorning"></td>
-                    <td><input type="checkbox" id="fridayAfternoon"></td>
-                    <td><input type="checkbox" id="fridayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Saturday</td>
-                    <td><input type="checkbox" id="saturdayMorning"></td>   
-                    <td><input type="checkbox" id="saturdayAfternoon"></td>
-                    <td><input type="checkbox" id="saturdayEvening"></td>
-                </tr>
-                <tr>
-                    <td>Sunday</td>
-                    <td><input type="checkbox" id="sundayMorning"></td>
-                    <td><input type="checkbox" id="sundayAfternoon"></td>
-                    <td><input type="checkbox" id="sundayEvening"></td>
-                </tr>
-            </table>       
-            <span class="user-form-description">You can change this anytime.</span><br>
-
-            <!-- endDate Field -->
-            <label for="endDate" id="label-endDate" class="user-form-label">End Registration Date:</label>
-            <input type="date" id="user-form-endDate" class="user-form-input">       
-            <span class="user-form-description">You will be automatically unregistered past this date. You can leave this blank to stay registered indefinitely.</span><br>
-        
-          </form>
-          <div class="btn btn-submit" id="user-form-submit">Submit</div>
         </div>
       </section>
 

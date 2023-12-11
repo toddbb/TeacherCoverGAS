@@ -238,6 +238,11 @@ header * {
     text-align: center;
 }
 
+.details-endDate-row {
+    display: flex;
+    align-items: flex-end;
+}
+
 .details-controls {
     display: flex;
     width: 100%;
@@ -253,10 +258,10 @@ header * {
     box-shadow: 0 0 2px 0 #db392d;
 }
 
-#btn-details-edit {
+#btn-details-edit, #user-form-cancel {
     background-color: #64656f;
 }
-#btn-details-edit:hover {
+#btn-details-edit:hover, #user-form-cancel:hover {
     background-color: #7c7d8a;
     box-shadow: 0 0 2px 0px #7c7d8a;
 }
@@ -285,7 +290,7 @@ form {
 
 /* Styling for labels */
 .user-form-label {
-    display: block;
+    display: inline-block;
     margin-bottom: 5px;
     font-size: 16px;
     color: #333;
@@ -316,6 +321,12 @@ form {
     padding: 6px;
 }
 
+.required-asteriks {
+    font-size: 1.1rem;
+    color: red;
+}
+
+
 /* Specific styling for checkboxes within the table */
 input[type="checkbox"] {
     cursor: pointer;
@@ -345,7 +356,12 @@ input[type="checkbox"] {
     background-color: #16bc16;
 }
 
-#user-form-submit {
+#user-form-submit, #user-form-edit {
+}
+
+.form-controls {
+    display: flex;
+    align-items: center;
     margin: 10px 0 40px 0;
 }
 

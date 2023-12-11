@@ -5,8 +5,20 @@ const Signup = {
 
     el: {},
     button: {},
+    vars: {
+        title: "You are currently not registered for cover classes. Register here!"
+    },
+
+    setTitle: (title) => {
+        Signup.el.title.innerText = title;
+    },
+
+    resetTitle: () => {
+        Signup.el.title.innerText = Signup.vars.title;
+    },
 
     init: () => {
+        Signup.el.title = document.getElementById('signup-status-title');
         Signup.button.register = document.getElementsByClassName('btn-signup')[0];
 
         Signup.button.register.addEventListener('click', () => {
@@ -28,7 +40,7 @@ const Form = {
         title: "Complete the form below to register for cover classes."
     },
 
-    changeTitle: (title) => {
+    setTitle: (title) => {
         if (title) { Form.el.title.innerText = title; }
     },
 
@@ -44,13 +56,15 @@ const Form = {
     },
 
     populateFields: () => {
-        for (prop in Teacher.data) {
-            let val = Teacher.data[prop];
-            Form.input[prop].value = val;
-        }
+        if (Teacher.isExist()) {
+            for (prop in Teacher.data) {
+                let val = prop === 'endDate' ? convertToYMD(Teacher.data[prop]) : Teacher.data[prop];
+                Form.input[prop].value = val;
+            }
 
-        Form.setCoverTypes();
-        Form.setAvail();
+            Form.setCoverTypes();
+            Form.setAvail();
+        }
         
         Form.input.email.value = Teacher.userEmail;
        
@@ -74,7 +88,7 @@ const Form = {
 
     setCoverTypes: () => {
 
-        if (!Teacher.data.coverType) { return };
+        if (!Teacher.isExist()) { return };
 
         const labels = document.querySelectorAll('#user-form-coverType label');
         Teacher.data.coverType.forEach(cover => {
@@ -127,27 +141,50 @@ const Form = {
     },
 
     validateResponses: (resp) => {
-        return false;
+        /// TO DO: validate responses; if not valid or missing, display error in status in form inputs
+        return true;
     },
 
-    submit: () => {
-        //// get values (except 'coverTypes' and 'availability')
-        let responses = {};
+    submit: async () => {
+
+        const isNewRegistration = Teacher.isExist() ? false : true;
+
+        // make an object 'formInputs' based on entry, similar to Teacher.data object
+        let formInputs = {};
         for (prop in Form.input) {
             let val = Form.input[prop].value;
-            responses[prop] = val;
-        }      
-        responses.availability = Form.getAvailResponses();
-        responses.coverType = Form.getCoverTypesResponses();
+            formInputs[prop] = val;
+        }
+        formInputs.endDate = convertToDMY(formInputs.endDate);   
+        formInputs.availability = Form.getAvailResponses();
+        formInputs.coverType = Form.getCoverTypesResponses();
 
         
-        let resp = Form.validateResponses(responses);
-        console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
+        let resp = Form.validateResponses(formInputs);
+        //console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
 
         if (resp) {
             Ui.hideForm();
+            Loader.setTitle("We're saving your details...")
             Ui.showLoader();
-            Server.writeUserData(resp);
+
+            try {
+                let status = await Server.writeUserData(resp, "submit");
+                if (status) {
+                    Teacher.data = formInputs;
+                    Details.updateHtml();
+                    Form.populateFields();
+                    Loader.resetTitle();
+                    let title = isNewRegistration ? 
+                        "Congratulations! You're registered for cover. We'll be in touch :)" :
+                        "Your details have been updated."
+                    Details.setTitle(title)
+                    Ui.hideLoader();
+                    Ui.showDetails();
+                }
+            } catch (error) {
+                console.log(`Error submitting registration to server. Error message: ${error}`);
+            }
         }
         
     },
@@ -164,18 +201,32 @@ const Form = {
         Form.input.endDate = document.getElementById('user-form-endDate');
 
         Form.button.submit = document.getElementById('user-form-submit');
+        Form.button.cancel = document.getElementById('user-form-cancel');
 
         Form.populateCentreDropdown(centres);
         Form.populateFields();
 
         //// Events
         Form.button.submit.addEventListener('click', () => { Form.submit() });
-        /* let checkLabels = document.querySelectorAll('#user-form-coverType label');
-        [...checkLabels].forEach(el => {
-            el.addEventListener('click', (e) => {
-                console.log(e);
-            })
-        }); */
+        Form.button.cancel.addEventListener('click', () => {
+            Ui.hideForm();
+            if (Teacher.isExist()) {
+                Ui.showDetails();
+            } else {                
+                Form.clearAll();
+                Ui.showSignup();
+            }
+        });
+
+        // Events for datepicker
+        Form.input.endDate.addEventListener('click', (e) => {
+            e.target.showPicker();
+        })
+        Form.input.endDate.addEventListener('keydown', (e) => {
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                e.target.value = '';
+            }
+        })
         
     }
 }
@@ -192,14 +243,52 @@ const Details = {
     vars: {
         title: "Congrats! You are currently registered for cover classes",
         subtitle: "See the details below. You can edit or unregister at anytime."
+    },    
+
+    setTitle: (title, subtitle) => {
+        if (title) { Details.el.title.innerText = title; }
+        if (subtitle) { Details.el.subtitle.innerText = subtitle; }
+    },
+
+    resetTitle: () => {
+        Details.el.title.innerText = Details.vars.title;
+        Details.el.subtitle.innerText = Details.vars.subtitle;
+    },
+
+    clearAllHtml: () => {
+
+        Details.el.name.innerText = "";
+        Details.el.email.innerText = Teacher.userEmail;
+        Details.el.phone.innerText = "";
+        Details.el.centre.innerText = "";
+        Details.el.endDate.innerText = "";
+
+        //// availability table
+        let cells = document.querySelectorAll('.availability-table-cell');
+        cells.forEach(cell => {
+            if (cell.hasChildNodes()) {
+                let childNode = cell.childNodes[0];
+                cell.removeChild(childNode);
+            }
+        })
+
+        //// coverTypes list items
+        let lists = document.querySelectorAll('.coverType-list-item');
+        lists.forEach(list => list.remove());
+
+        
     },
 
     updateHtml: () => {
+
+        Details.clearAllHtml();         // reset all Html first
 
         Details.el.name.innerText = Teacher.data.name;
         Details.el.email.innerText = Teacher.data.email;
         Details.el.phone.innerText = Teacher.data.phone;
         Details.el.centre.innerText = Teacher.data.centre;
+        Details.el.endDate.innerText = Teacher.data.endDate || "(none)";
+
         //// availabilitiy table
         let rowsCollection = document.querySelector('#details-availability-table table').rows;
         [...rowsCollection].forEach((row, index) => {
@@ -215,26 +304,46 @@ const Details = {
             }
         })
 
+        //// coverTpe list items
         let list = document.getElementById('coverType-list');
         Teacher.data.coverType.forEach(cover => {
             let newChild = document.createElement("li");
             newChild.classList.add('coverType-list-item');
-            let newList = list.appendChild(newChild);
-            newList.innerText = cover;
+            newChild.innerText = cover;
+            list.appendChild(newChild);
         });
 
 
     },
 
-    changeTitle: (title, subtitle) => {
-        if (title) { Details.el.title.innerText = title; }
-        if (subtitle) { Details.el.subtitle.innerText = subtitle; }
+
+    unregister: async () => {
+
+        Ui.hideDetails();
+        Loader.setTitle("Sorry to see you go.", "We're removing you from the registration...");
+        Ui.showLoader();
+
+        try {
+            let status = await Server.deleteUser(Teacher.userEmail);
+
+            if (status) {
+                Teacher.data = {};
+                Ui.hideLoader();
+                Ui.showUnregister();
+                Form.clearAll();
+                Details.clearAllHtml();
+                Details.resetTitle();
+                Form.resetTitle();
+                Loader.resetTitle();
+            } else {
+                throw new Error("No response from server. Could not delete the user.")
+            }
+
+        } catch (error) {
+            console.log(`Oops. There was a problem deleting the user. Error: ${error}`);
+        }
     },
 
-    resetTitle: () => {
-        Details.el.title.innerText = Details.vars.title;
-        Details.el.subtitle.innerText = Details.vars.subtitle;
-    },
 
     init: () => {
         Details.el.name = document.getElementById('details-name');
@@ -242,6 +351,7 @@ const Details = {
         Details.el.phone = document.getElementById('details-phone');
         Details.el.centre = document.getElementById('details-centre');
         Details.el.coverType = document.getElementById('details-coverType');
+        Details.el.endDate = document.getElementById('details-endDate');
         Details.el.title = document.getElementById('details-status-title');
         Details.el.subtitle = document.getElementById('details-status-subtitle');
 
@@ -251,14 +361,10 @@ const Details = {
 
         Details.button.edit.addEventListener('click', () => {
             Ui.hideDetails();
-            Form.changeTitle("Edit your details below and then click 'Submit'");
+            Form.setTitle("Edit your details below and then click 'Submit'");
             Ui.showForm();
         });
-        Details.button.unregister.addEventListener('click', () => {
-            Ui.hideDetails();
-            Unregister.deleteUser();
-            Ui.showSignup();
-        });
+        Details.button.unregister.addEventListener('click', () => { Details.unregister(); });
 
     }
 }
@@ -275,13 +381,6 @@ const Unregister = {
         Ui.showSignup();
     },
 
-    deleteUser: () => {
-        Teacher.data = {};
-        ///TO DO: remove user from Sheets        
-        ///Server.writeUserData();
-        Form.clearAll();
-    },
-
     init: () => {
         Unregister.button.exit = document.getElementById('btn-unregister-exit');
         
@@ -295,7 +394,11 @@ const Unregister = {
 /*********************************************************/
 const Teacher = {    
     data: {},
-    userEmail: null
+    userEmail: null,
+
+    isExist: () => {
+        return Object.keys(Teacher.data).length > 0 && Teacher.userEmail.length > 0;
+    }
 };
 
 
@@ -309,8 +412,9 @@ const Loader = {
         subtitle: "This should only take a few seconds."
     },
 
-    changeTitle: (title, subtitle) => {
-
+    setTitle: (title, subtitle) => {
+        if (title) { Loader.el.title.innerText = title; }
+        if (subtitle) { Loader.el.subtitle.innerText = subtitle; }
     },
 
     resetTitle: () => {
@@ -331,17 +435,19 @@ const Loader = {
 /*********************************************************/
 const Ui = {
 
-  el: {},
+    el: {},
 
     showLoader: () => { setDisplay(Ui.el.sectionLoader, 'show'); },
     hideLoader: () => { 
         setDisplay(Ui.el.sectionLoader, 'hide'); 
     },
+
     showDetails: () => { setDisplay(Ui.el.sectionDetails, 'show'); },
     hideDetails: () => { 
         setDisplay(Ui.el.sectionDetails, 'hide'); 
         Details.resetTitle();
     },  
+
     showUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'show'); },
     hideUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'hide'); },  
     showSignup: () => { setDisplay(Ui.el.sectionSignup, 'show'); },
@@ -367,7 +473,7 @@ const Ui = {
 
 
 //// DEV GLOBAL!!!
-const dev_isTeacherExist = false;
+const dev_isTeacherExist = true;
 const timeout = 2000;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
@@ -376,7 +482,7 @@ const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14"
 /*********************************************************/
 const Server = {
 
-    writeUserData: async (resp) => {
+    writeUserData: async (payload) => {
         ///// simulate call to server
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -385,8 +491,17 @@ const Server = {
         });
     },
 
+    deleteUser: async (userEmail) => {
+        ///// simulate call to server
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, timeout)
+        })
+    },
 
-    getAllData: async () => {
+
+    getAll: async () => {
         ///// simulate call to server
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -417,19 +532,17 @@ const init = async () => {
 
     try {
 
-        let data = await Server.getAllData();
+        let response = await Server.getAll();
 
-        console.log(data);
-
-        if (data.teacher.data) { Teacher.data = data.teacher.data; }
-        if (data.teacher.userEmail) { Teacher.userEmail = data.teacher.userEmail; }
-
+        Teacher.data = response.teacher.data;
+        Teacher.userEmail = response.teacher.userEmail;
         
         Ui.hideLoader();
+        
+        Form.init(response.centres);
 
-        // if UserData has a "name" assigned, then it exists in the table
-        if (Object.keys(Teacher.data).length === 0 && Teacher.data.constructor === Object) {
-            Form.init(data.centres);
+        if (Teacher.isExist()) {
+            console.log("Detected teacher registration.")
             Details.updateHtml();
             Ui.showDetails();
         } else {
@@ -460,6 +573,21 @@ function setDisplay(el, action) {
     if (action === 'hide') {
         el.classList.contains('nodisplay') || el.classList.add('nodisplay');
     }
+}
+
+function convertToYMD(string) {
+    //// date in 'dd/mm/yyyy' format
+    let arr = string.split("/");
+    //// new date in 'yyyy-MM-dd' format    
+    return arr[2] + "-" + arr[1] + "-" + arr[0];
+}
+
+
+function convertToDMY(string) {
+    //// date in 'yyyy-MM-dd' format
+    let arr = string.split("-");
+    //// new date in 'dd/mm/yyyy' format    
+    return arr[2] + "/" + arr[1] + "/" + arr[0];
 }
 
 
