@@ -24,6 +24,17 @@ const Form = {
     el: {},
     input: {},
     button: {},
+    vars: {
+        title: "Complete the form below to register for cover classes."
+    },
+
+    changeTitle: (title) => {
+        if (title) { Form.el.title.innerText = title; }
+    },
+
+    resetTitle: () => {
+        Form.el.title.innerText = Form.vars.title;
+    },
 
     populateCentreDropdown: (centres) => {
         centres.forEach(centre => {
@@ -35,18 +46,14 @@ const Form = {
     populateFields: () => {
         for (prop in Teacher.data) {
             let val = Teacher.data[prop];
-            console.log(`${prop} = ${val}`);
-            //if (val && val.length > -1) {
-                Form.input[prop].value = val;
-            //}
+            Form.input[prop].value = val;
         }
 
         Form.setCoverTypes();
         Form.setAvail();
-
-        if (Teacher.userEmail) {
-            Form.input.email.value = Teacher.userEmail;
-        }
+        
+        Form.input.email.value = Teacher.userEmail;
+       
     },
 
     clearAll: () => {
@@ -56,6 +63,8 @@ const Form = {
         allSelects.forEach(select => select.value = null);
         let allChecks = document.querySelectorAll(".section-form input[type='checkbox']")
         allChecks.forEach(check => check.checked = false);
+
+        Form.input.email.value = Teacher.userEmail;
         
     },
 
@@ -80,7 +89,17 @@ const Form = {
     },
 
     setAvail: () => {
-        //// TO DO: set the availability here based on the Teacher.data.availability
+        let avail = Teacher.data.availability;
+        for (prop in avail) {
+            let day = avail[prop];
+            let times = ["Morning", "Afternoon", "Evening"];
+            day.forEach((boolean, index) => {
+                if (boolean) {
+                    document.getElementById(prop + times[index]).checked = true;
+                }
+            })
+        }
+
     },
 
     getCoverTypesResponses: () => {
@@ -135,6 +154,7 @@ const Form = {
 
 
     init: (centres) => {
+        Form.el.title = document.getElementsByClassName('form-status-title')[0];
         Form.input.name = document.getElementById('user-form-name');
         Form.input.email = document.getElementById('user-form-email');
         Form.input.phone = document.getElementById('user-form-phone');
@@ -169,7 +189,13 @@ const Details = {
 
     button: {},
 
+    vars: {
+        title: "Congrats! You are currently registered for cover classes",
+        subtitle: "See the details below. You can edit or unregister at anytime."
+    },
+
     updateHtml: () => {
+
         Details.el.name.innerText = Teacher.data.name;
         Details.el.email.innerText = Teacher.data.email;
         Details.el.phone.innerText = Teacher.data.phone;
@@ -188,9 +214,7 @@ const Details = {
                 
             }
         })
-        //// type of cover
-        //let covers = Teacher.data.coverType.split(",");
-        //covers = covers.map(e => e.trim());
+
         let list = document.getElementById('coverType-list');
         Teacher.data.coverType.forEach(cover => {
             let newChild = document.createElement("li");
@@ -202,17 +226,32 @@ const Details = {
 
     },
 
+    changeTitle: (title, subtitle) => {
+        if (title) { Details.el.title.innerText = title; }
+        if (subtitle) { Details.el.subtitle.innerText = subtitle; }
+    },
+
+    resetTitle: () => {
+        Details.el.title.innerText = Details.vars.title;
+        Details.el.subtitle.innerText = Details.vars.subtitle;
+    },
+
     init: () => {
         Details.el.name = document.getElementById('details-name');
         Details.el.email = document.getElementById('details-email');
         Details.el.phone = document.getElementById('details-phone');
         Details.el.centre = document.getElementById('details-centre');
         Details.el.coverType = document.getElementById('details-coverType');
+        Details.el.title = document.getElementById('details-status-title');
+        Details.el.subtitle = document.getElementById('details-status-subtitle');
+
         Details.button.edit = document.getElementById('btn-details-edit');
         Details.button.unregister = document.getElementById('btn-details-unregister');
+        
 
         Details.button.edit.addEventListener('click', () => {
             Ui.hideDetails();
+            Form.changeTitle("Edit your details below and then click 'Submit'");
             Ui.showForm();
         });
         Details.button.unregister.addEventListener('click', () => {
@@ -250,6 +289,7 @@ const Unregister = {
     }
 }
 
+
 /*********************************************************/
 /**              Teacher                                **/
 /*********************************************************/
@@ -257,6 +297,32 @@ const Teacher = {
     data: {},
     userEmail: null
 };
+
+
+/*********************************************************/
+/**               Loader Section                       **/
+/*********************************************************/
+const Loader = {
+    el: {},
+    vars: {
+        title: "Loading...",
+        subtitle: "This should only take a few seconds."
+    },
+
+    changeTitle: (title, subtitle) => {
+
+    },
+
+    resetTitle: () => {
+        Loader.el.title.innerText = Loader.vars.title;
+        Loader.el.subtitle.innerText = Loader.vars.subtitle;
+    },
+
+    init: () => {
+        Loader.el.title = document.getElementById('loader-title');
+        Loader.el.subtitle = document.getElementById('loader-subtitle');
+    }
+}
 
 
 
@@ -267,31 +333,120 @@ const Ui = {
 
   el: {},
 
-  showLoader: () => { setDisplay(Ui.el.sectionLoader, 'show'); },
-  hideLoader: () => { setDisplay(Ui.el.sectionLoader, 'hide'); },
-  showDetails: () => { setDisplay(Ui.el.sectionDetails, 'show'); },
-  hideDetails: () => { setDisplay(Ui.el.sectionDetails, 'hide'); },  
-  showUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'show'); },
-  hideUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'hide'); },  
-  showSignup: () => { setDisplay(Ui.el.sectionSignup, 'show'); },
-  hideSignup: () => { setDisplay(Ui.el.sectionSignup, 'hide'); },
-  showForm: () => { setDisplay(Ui.el.sectionForm, 'show'); },
-  hideForm: () => { setDisplay(Ui.el.sectionForm, 'hide'); },
-  showStatus: () => { setDisplay(Ui.el.sectionStatus, 'show'); },
-  hideStatus: () => { setDisplay(Ui.el.sectionStatus, 'hide'); },
-  showDev: () => { setDisplay(Ui.el.sectionDev, 'show'); },
-  hideDev: () => { setDisplay(Ui.sectionDev, 'hide'); },
+    showLoader: () => { setDisplay(Ui.el.sectionLoader, 'show'); },
+    hideLoader: () => { 
+        setDisplay(Ui.el.sectionLoader, 'hide'); 
+    },
+    showDetails: () => { setDisplay(Ui.el.sectionDetails, 'show'); },
+    hideDetails: () => { 
+        setDisplay(Ui.el.sectionDetails, 'hide'); 
+        Details.resetTitle();
+    },  
+    showUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'show'); },
+    hideUnregister: () => { setDisplay(Ui.el.sectionUnregister, 'hide'); },  
+    showSignup: () => { setDisplay(Ui.el.sectionSignup, 'show'); },
+    hideSignup: () => { setDisplay(Ui.el.sectionSignup, 'hide'); },
+    showForm: () => { setDisplay(Ui.el.sectionForm, 'show'); },
+    hideForm: () => { setDisplay(Ui.el.sectionForm, 'hide'); },
+    showStatus: () => { setDisplay(Ui.el.sectionStatus, 'show'); },
+    hideStatus: () => { setDisplay(Ui.el.sectionStatus, 'hide'); },
+    showDev: () => { setDisplay(Ui.el.sectionDev, 'show'); },
+    hideDev: () => { setDisplay(Ui.sectionDev, 'hide'); },
 
-  init: () => {
-    Ui.el.sectionLoader = document.getElementsByClassName("section-loader")[0];
-    Ui.el.sectionDetails = document.getElementsByClassName("section-details")[0];
-    Ui.el.sectionUnregister = document.getElementsByClassName("section-unregister")[0];
-    Ui.el.sectionSignup = document.getElementsByClassName("section-signup")[0];
-    Ui.el.sectionForm = document.getElementsByClassName("section-form")[0];
-    Ui.el.sectionStatus = document.getElementsByClassName("section-status")[0];
-    Ui.el.sectionDev = document.getElementsByClassName("section-dev")[0];
-  }
+    init: () => {
+        Ui.el.sectionLoader = document.getElementsByClassName("section-loader")[0];
+        Ui.el.sectionDetails = document.getElementsByClassName("section-details")[0];
+        Ui.el.sectionUnregister = document.getElementsByClassName("section-unregister")[0];
+        Ui.el.sectionSignup = document.getElementsByClassName("section-signup")[0];
+        Ui.el.sectionForm = document.getElementsByClassName("section-form")[0];
+        Ui.el.sectionStatus = document.getElementsByClassName("section-status")[0];
+        Ui.el.sectionDev = document.getElementsByClassName("section-dev")[0];
+    }
 }
+
+
+
+//// DEV GLOBAL!!!
+const dev_isTeacherExist = false;
+const timeout = 2000;
+const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
+
+/*********************************************************/
+/**             SERVER FUNCTIONS                        **/
+/*********************************************************/
+const Server = {
+
+    writeUserData: async (resp) => {
+        ///// simulate call to server
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, timeout);
+        });
+    },
+
+
+    getAllData: async () => {
+        ///// simulate call to server
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let teacher = dev_isTeacherExist ? TestTeacherData_EXISTS : TestTeacherData_NONE;
+                let data = {                    
+                    centres: allCentres,
+                    teacher: teacher
+                }
+                resolve(data);
+            }, timeout);
+        });
+    }    
+}
+
+
+
+
+///////////////////////////  ALL CODE BELOW FOR DEV IN LIVE SERVER ONLY!!!!  ////////////////////////////////
+
+const init = async () => {
+
+    Ui.init();
+    Loader.init();
+    Details.init();
+    Unregister.init();
+    Signup.init();
+
+
+    try {
+
+        let data = await Server.getAllData();
+
+        console.log(data);
+
+        if (data.teacher.data) { Teacher.data = data.teacher.data; }
+        if (data.teacher.userEmail) { Teacher.userEmail = data.teacher.userEmail; }
+
+        
+        Ui.hideLoader();
+
+        // if UserData has a "name" assigned, then it exists in the table
+        if (Object.keys(Teacher.data).length === 0 && Teacher.data.constructor === Object) {
+            Form.init(data.centres);
+            Details.updateHtml();
+            Ui.showDetails();
+        } else {
+            Ui.showSignup()
+            ///Ui.showForm(); /// For dev of Form only; delete when done
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    
+}
+
+init()
+
+
 
 
 /*********************************************************/
@@ -309,73 +464,9 @@ function setDisplay(el, action) {
 
 
 
-
-
-
-
-
-///////////////////////////  ALL CODE BELOW FOR DEV IN LIVE SERVER ONLY!!!!  ////////////////////////////////
-
-const init = async () => {
-    Ui.init();
-    Details.init();
-    Unregister.init();
-    Signup.init();
-
-
-    /// simulate server call and getting Teacher class
-    delay(0, 'Making call to server').then(() => {
-
-        console.log('Received response from server');
-
-        dev_isTeacherExist = false;
-
-        if (dev_isTeacherExist) {
-            Teacher.data = TestTeacherData_EXISTS.data;
-            Teacher.userEmail = TestTeacherData_EXISTS.userEmail;
-        } else {
-            Teacher.data = TestTeacherData_NONE.data;
-            Teacher.userEmail = TestTeacherData_NONE.userEmail;
-        }
-
-        console.log(JSON.stringify(Teacher.data));
-
-        //// TO DO: this is where the server would also get the list of centres from the server /////
-
-        Form.init(allCentres);
-        Ui.hideLoader();
-
-        
-
-        // if UserData has a "name" assigned, then it exists in the table
-        if (Teacher.data.name) {
-            Details.updateHtml();
-            Ui.showDetails();
-        } else {
-            ///Ui.showSignup()
-            Ui.showForm(); /// For dev of Form only; delete when done
-        }
-    });
-
-}
-
-init()
-
-
-
-///////////// SIMULATED FUNCTIONS AND DATA FOR DEV ONLY //////////////////////////
-
-const Server = {
-
-    writeUserData: async (resp) => {
-        delay(2000, "Sending Resposnes to Server").then(() => {
-            console.log("Successfully sent to the server!");
-            Ui.hideLoader();
-            Ui.showDetails();
-        });
-    }
-}
-
+/*********************************************************/
+/**          DEVELOPMENT ONLY!!!!!!!!!                  **/
+/*********************************************************/
 
 function delay(time, msg) {
     return new Promise(resolve => {
@@ -412,6 +503,5 @@ const TestTeacherData_NONE = {
     data: {}
 }
 
-const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
   
   
