@@ -1,21 +1,559 @@
 <style>
 
-body {
+:root {
+    --color-ila: #2b378b;
+}
+
+.none {
+    outline: 3px solid yellow;
+}
+
+
+/***********************************************/
+/**      CLASSES: general classes              */
+/***********************************************/
+h1, h2, h3, h4, h5, h6, p, span {
+    text-align: center;
+    margin: 5px 0;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #444;
+}
+
+th, td {
+    padding: 0 5px;
+}
+
+section { 
+    width: 100%;
+    padding: 0 20px;
+}
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  vertical-align: middle;
+}
+
+.btn {    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 130px;
+    margin: 0 20px;
+    padding: 3px;
+    background-color: var(--color-ila);
+    border-radius: 7px;
+    border: none;
+    font-size: 14px;
+    color: #F9F9F9;
+    cursor: pointer;
+}
+
+.btn > span {
+    color: #F9F9F9;
+}
+
+.btn > * {
+    margin: 5px;
+}
+
+.btn:hover {
+    box-shadow: 0 0 2px 0px darkblue;
+    background-color: darkblue;
+}
+
+
+
+/***********************************************/
+/**         BODY, MAIN, AND HEADER             */
+/***********************************************/
+
+body {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-ila);
+    box-sizing: border-box;
+    font-family: 'Mulish', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+header, main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #FAFAFA;
+}
+
+/***********************************************/
+/**             HEADER                         */
+/***********************************************/
+header {
+    align-items: center;
+}
+header * {
+    margin: 0 20px;
+}
+
+/***********************************************/
+/**             Section: SIGNUP                */
+/***********************************************/
+.section-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: 30px;
+}
+
+.signup-instructions h3 { 
+    margin: 0 0 0px 20px;
+    font-size: 1.15rem;
+}
+
+.signup-instruct-row {
+    display: flex;
+    margin: 35px;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.signup-instruct-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 30px;
+    width: 30px;
+    margin: 0 15px 0 0;
+    padding: 5px;
+    border-radius: 50%;
+    background-color: #199319;
+    color: #F0F0F0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 0 7px -3px #666;
+}
+
+.signup-instruct-text {
+    flex-basis: fit-content;
+    flex-shrink: 1;
+}
+
+.btn-signup {
+    width: 160px;
+    margin-top: 20px;
+    background-color: green;
+    font-size: 1rem;
+}
+
+.btn-signup:hover {
+    background-color: rgb(7, 150, 7);
+}
+
+.signup-faq-container {
+    margin: 25px;
+}
+
+.signup-faq-container > h4 {
+    text-align: left;
+    font-size: 1rem;
+}
+
+.faq-row {
+    margin: 15px 0;
+}
+
+.faq-title {
+    font-weight: bold;
+}
+
+.faq-text {
+    font-size: 0.9rem;
+}
+
+
+
+/***********************************************/
+/**          Section: FORM                     */
+/***********************************************/
+
+.user-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Base styling for the form */
+form {
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Styling for labels */
+.user-form-label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Common styling for all input fields */
+.user-form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for description text below the select input */
+.user-form-description {
+    display: block;
+    margin: 5px 0 0px 5px;
+    text-align: left;
+    font-size: 12px; 
+    color: #666;
+}
+
+#user-form-coverType, #user-form-locations {
+    background-color: #fbfbfb;
+}
+.coverType-check-group, .locations-check-group {
+    padding: 6px;
+}
+
+.required-asteriks {
+    font-size: 1.1rem;
+    color: red;
+}
+
+.coverType-check-group > label,
+.locations-check-group > label {
+    cursor:pointer;
+}
+
+/* Specific styling for checkboxes within the table */
+input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+/* Table styling */
+#user-form-availability {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#user-form-availability th, #user-form-availability td {
+    text-align: center;
+    padding: 8px;
+}
+
+#user-form-availability th {
+    background-color: #eee;
+}
+
+#user-form-availability tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
+
+#user-form-availability > tr > td:nth-child(1) {
+    background-color: #16bc16;
+}
+
+#user-form-submit, #user-form-edit {
+}
+
+.form-controls {
+    display: flex;
+    align-items: center;
+    margin: 10px 0 40px 0;
+}
+
+/*  Form Validation */
+#form-title-error {
+    padding: 3px 0;
+    margin-bottom: 10px;
+    background-color: #f9a8a8;
+    border-radius: 4px;
+}
+
+.invalidInput {
+    border: 1px solid #e42e2e;
 }
 
 
 
 
+
+/***********************************************/
+/**             Section: DETAIL                */
+/***********************************************/
+
+.details-container { 
+    margin: 25px 20px 10px 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 4px -2px #999;
+}
+
+.details-row { margin-top: 10px; }
+.details-row-title { font-weight: bold; }
+.details-row-text { 
+    font-size: 0.9rem; 
+    min-height: 1.1rem;
+}
+
+/*******   AVAILABILITY TABLE    *******/
+#details-availability-table {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+#details-availability-table table {
+    width: 100%;
+    max-width: 700px;
+    border-spacing: 0px;
+}
+
+#details-availability-table th,
+#details-availability-table td {
+    border: 1px solid #ddd;
+}
+
+.table-head-col1 {
+    text-align: left;
+}
+
+.availability-table-row-header {
+    background-color: #d5e8d2;
+}
+
+.availability-table-row:not(:first-child) {
+    height: 30px;
+}
+
+.availability-table-cell {
+    text-align: center;
+}
+
+.details-endDate-row {
+    display: flex;
+    align-items: flex-end;
+}
+
+.details-controls {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#btn-details-unregister {
+    background-color: #ba2f26;
+}
+#btn-details-unregister:hover {
+    background-color: #db392d;
+    box-shadow: 0 0 2px 0 #db392d;
+}
+
+#btn-details-edit, #user-form-cancel {
+    background-color: #64656f;
+}
+#btn-details-edit:hover, #user-form-cancel:hover {
+    background-color: #7c7d8a;
+    box-shadow: 0 0 2px 0px #7c7d8a;
+}
+
+
+
+
+
+
+
+/***********************************************/
+/**             Section: UNREGISTER            */
+/***********************************************/
+.section-unregister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.section-unregister .btn {
+    width: 150px;
+    margin-top: 100px; 
+}
+
+
+
+/***********************************************/
+/**             Section: LOADER                */
+/***********************************************/
+.section-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-loader * {
+    margin: 5px 0;
+    text-align: center;
+}
+
+.loader {
+    margin: 10px;
+    border: 5px solid #f3f3f3; /* Light grey border */
+    border-top: 5px solid #3498db; /* Blue border */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/***********************************************/
+/**   CLASSES: overriding all other classes    */
+/***********************************************/
 .nodisplay {
-  display: none;
+    display: none;
 }
+
+
+
+/***********************************************/
+/**                 RESPONSIVE                 */
+/***********************************************/
+
+@media only screen and (max-width: 960px) {
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    /* section {
+        background-color: rgb(255, 190, 190);
+    } */
+}
+
+
+@media only screen and (max-width: 600px) {
+    /* Empty styles for 960px and below */
+    header { font-size: 0.8rem; }
+    /* section {
+        background-color: rgb(187, 255, 187);
+    } */
+
+    /**** SECTION: Signup  ****/
+    .signup-instruct-row {
+        margin: 20px 10px;
+    }
+    .signup-instruct-number {
+        height: 20px;
+        width: 20px;
+        margin: 0 7px 0 0;
+    }
+    .signup-faq-container {
+        margin: 25px 10px;
+    }
+
+    /**** SECTION: Details *****/
+    .details-container {
+        margin: 25px 0 10px 0;
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    html { font-size: 92.5%; }
+    /* Empty styles for 960px and below */
+
+    .btn {
+        height: 30px;
+        width: 100px;
+        margin: 0 15px;
+    }
+    section {
+        padding: 0 10px;
+        /* background-color: rgb(227, 180, 254); */
+    }
+
+    /***** SECTION: Form *****/
+    form {
+        border: none;
+        border-radius: 0px;
+        padding: 20px 10px;
+        margin: 0px auto 10px auto;
+        box-shadow: none;
+        background-color: #fafafa;
+    }
+
+    form * {
+        font-size: 93% !important;
+    }
+
+    /***** SECTION: Details *****/
+    .details-container {
+        padding: 15px 5px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: none;
+        background-color: #FEFEFE;
+    }
+    #details-availability-table {
+        font-size: 80%;
+    }
+    #details-availability-table .material-symbols-outlined {
+        font-size: 18px;
+    }
+
+    /***** SECTION: Unregister ******/
+    .section-unregister h1 {
+        font-size: 1.3rem;
+    }
+
+}
+
+
+@media only screen and (max-width: 320px) {
+    /* Empty styles for 960px and below */
+    /* section {
+        background-color: rgb(248, 248, 185);
+    } */
+}
+
 
 </style>

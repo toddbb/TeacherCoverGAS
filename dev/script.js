@@ -742,13 +742,13 @@ const TestTeacherData_EXISTS = {
         phone: "012 345 6789",
         centre: "TC-HCMC12",
         availability: {
-            monday: [false, false, true],
+            monday: [true, true, true],
             tuesday: [false, false, false],
-            wednesday: [true, true, true],
-            thursday: [true, true, false],
+            wednesday: [false, false, false],
+            thursday: [false, false, false],
             friday: [false, false, false],
-            saturday: [false, true, false],
-            sunday: [false, true, false]
+            saturday: [true, true, true],
+            sunday: [false, false, false]
         },
         coverType: ["ILA / OLA Classes", "Public School Classes"],
         locations: ["North", "East", "Central"],
