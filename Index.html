@@ -18,6 +18,9 @@
     </header>
 
     <main>     
+
+      <!---------------------------------------  SIGNUP  -------------------------------------------->
+
       <section class="section-signup nodisplay">
         <div class="signup-status">
           <h3 id="signup-status-title">You are currently not registered for cover classes. Register here!</h3>
@@ -60,6 +63,8 @@
           </div>
         </div>
       </section>
+
+        <!--------------------------------------- FORM  -------------------------------------------->
 
       <section class="section-form nodisplay">
         <div class="form-status">
@@ -179,10 +184,38 @@
             </table>       
             <span class="user-form-description">You can change this anytime.</span><br>
 
+            <!-- Locations Options -->
+            <div id="label-locations" class="user-form-label div-label">Preferred Locations (<a href="https://drive.google.com/file/d/1Kfr8iceGPF43TdQVhYZaf9hOWY8qprkz/view?usp=drive_link" target="_blank">map</a>):
+            </div>
+            <span class="required-asteriks">*</span>
+            <div id="user-form-locations" class="user-form-input">
+              <div class="locations-check-group">
+                <input type="checkbox" id='north' class="locations-check">
+                <label for="north">North</label>
+              </div>
+              <div class="locations-check-group">
+                <input type="checkbox" id='east' class="locations-check">
+                <label for="east">East</label>
+              </div>
+              <div class="locations-check-group">
+                <input type="checkbox" id='south' class="locations-check">
+                <label for="south">South</label>
+              </div>
+              <div class="locations-check-group">
+                <input type="checkbox" id='west' class="locations-check">
+                <label for="west">West</label>
+              </div>
+              <div class="locations-check-group">
+                <input type="checkbox" id='central' class="locations-check">
+                <label for="central">Central</label>
+              </div>
+            </div>            
+            <span class="user-form-description">Increase your opportunity for cover by selecting multiple or all locations.</span><br>
+
             <!-- endDate Field -->
             <label for="user-form-endDate" id="label-endDate" class="user-form-label">End Registration Date:</label>
             <input type="date" id="user-form-endDate" class="user-form-input">       
-            <span class="user-form-description">You will be automatically unregistered past this date. You can leave this blank to stay registered indefinitely.</span><br>
+            <span class="user-form-description">You will be automatically unregistered past this date. You can leave this blank to always stay registered.</span><br>
         
           </form>
           <div class="form-controls">
@@ -192,6 +225,7 @@
         </div>
       </section>
 
+      <!--------------------------------------- DETAILS  -------------------------------------------->
 
       <section class="section-details nodisplay">
 
@@ -278,6 +312,12 @@
               <ul id="coverType-list"></ul>
             </div>
           </div>
+          <div class="details-row">
+            <div class="details-row-title">Preferred Locations</div>
+            <div class="details-row-text" id="details-locations">
+              <ul id="locations-list"></ul>
+            </div>
+          </div>
           <div class="details-row details-endDate-row">
             <div class="details-row-title">End Date:&nbsp;</div>
             <div class="details-row-text" id="details-endDate"></div>
@@ -289,6 +329,8 @@
         </div>
       </section>
 
+      <!--------------------------------------- UNREGISTER  -------------------------------------------->
+
       <section class="section-unregister nodisplay">
         <h1>Saying goodbye is never easy.</h1>
         <h1>We hope you come back soon :)</h1>
@@ -298,10 +340,13 @@
         </div>
       </section>
 
+      <!--------------------------------------- STATUS (DELETE)  -------------------------------------------->
+
       <section class="section-status nodisplay">
         <h1>This is the status page</h1>
       </section>
       
+      <!--------------------------------------- LOADER -------------------------------------------->
   
       <section class="section-loader">
         <div class="loader-text">
@@ -310,6 +355,8 @@
         </div>
         <div class="loader"></div>
       </section>
+
+      <!--------------------------------------- DEV ONLY -------------------------------------------->
 
       <section class="section-dev nodisplay">
         <button onclick="getData()">Get Data</button>

@@ -1,7 +1,7 @@
 //// DEV GLOBALS!!!
-const dev_isTeacherExist = false;
+const dev_isTeacherExist = true;
 const TestEnvironment = true; 
-const timeout = 3000;
+const timeout = 0;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
 
@@ -70,6 +70,7 @@ const Form = {
             }
 
             Form.setCoverTypes();
+            Form.setLocations();
             Form.setAvail();
         }
         
@@ -109,6 +110,20 @@ const Form = {
         })
     },
 
+    setLocations: () => {
+        if (!Teacher.isExist()) { return };
+
+        const labels = document.querySelectorAll('#user-form-locations label');
+        Teacher.data.locations.forEach(location => {
+            labels.forEach(label => {
+                if (label.innerText === location) {
+                    let id = label.htmlFor;
+                    document.getElementById(id).checked = true;
+                }
+            })
+        })
+    },
+
     setAvail: () => {
         let avail = Teacher.data.availability;
         for (prop in avail) {
@@ -133,6 +148,14 @@ const Form = {
         
     },
 
+    getLocationsResponses: () => {
+        let types = document.querySelectorAll(".locations-check-group input[type='checkbox']");
+        let checked = [...types].filter(type => type.checked);
+        return checked.map(el => {
+            return el.nextSibling.nextSibling.innerText;
+        })        
+    },
+
     getAvailResponses: () => {
         //// availability
         let elChecks = document.querySelectorAll('#user-form-availability td input');
@@ -143,18 +166,20 @@ const Form = {
             if (!objAvail[day]) { objAvail[day] = [] };
             objAvail[day].push(check.checked);
         })
-
         return objAvail;
+    },
+
+    clearAllValidation: () => {
+        let inputs = document.querySelectorAll('.user-form-input');
+        inputs.forEach(input => {
+            input.classList.remove('invalidInput');
+        });
+        setDisplay(Form.el.errorMsg, 'hide');
     },
 
     validateResponses: (userInput) => {
         //// reset all validation errors and messages
-        let inputs = document.querySelectorAll('#user-form-input');
-        inputs.forEach(input => {
-            input.classList.remove('invalidInput');
-        });
-        setDisplay(Form.el.errorMsg, 'hide');       
-
+        Form.clearAllValidation();
         let invalids = [];
 
         //// validate most form inputs to make sure they are not blank
@@ -183,7 +208,7 @@ const Form = {
             });
             setDisplay(Form.el.errorMsg, 'show');
             window.scrollTo(0, {behavior: 'smooth'});
-            
+
             return false;
         }
 
@@ -199,16 +224,19 @@ const Form = {
         for (prop in Form.input) {
             let val = Form.input[prop].value;
             formInputs[prop] = val;
-        }
-        formInputs.endDate = convertToDMY(formInputs.endDate);   
+        }        
+
         formInputs.availability = Form.getAvailResponses();
         formInputs.coverType = Form.getCoverTypesResponses();
+        formInputs.locations = Form.getLocationsResponses();
+        formInputs.endDate = convertToDMY(formInputs.endDate);  
 
         let resp = Form.validateResponses(formInputs);
         //console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
 
         if (resp) {
             Ui.hideForm();
+            Form.clearAllValidation();
             Loader.setTitle("We're saving your details...")
             Ui.showLoader();
 
@@ -245,6 +273,7 @@ const Form = {
         Form.input.centre = document.getElementById('user-form-centre');
         Form.input.coverType = document.getElementById('user-form-coverType');
         Form.input.availability = document.getElementById('user-form-availability');
+        Form.input.locations = document.getElementById('user-form-locations');
         Form.input.endDate = document.getElementById('user-form-endDate');
 
         Form.button.submit = document.getElementById('user-form-submit');
@@ -256,9 +285,12 @@ const Form = {
         //// Events
         Form.button.submit.addEventListener('click', () => { Form.submit() });
         Form.button.cancel.addEventListener('click', () => {
-            Ui.hideForm();
+            Ui.hideForm();            
+            Form.clearAllValidation();
+            
             if (Teacher.isExist()) {
                 Ui.showDetails();
+                Form.populateFields();
             } else {                
                 Form.clearAll();
                 Ui.showSignup();
@@ -320,8 +352,12 @@ const Details = {
         })
 
         //// coverTypes list items
-        let lists = document.querySelectorAll('.coverType-list-item');
-        lists.forEach(list => list.remove());
+        let coverTypeLists = document.querySelectorAll('.coverType-list-item');
+        coverTypeLists.forEach(list => list.remove());
+
+        //// Locations list items
+        let locationLists = document.querySelectorAll('.locations-list-item');
+        locationLists.forEach(list => list.remove());
 
         
     },
@@ -357,6 +393,17 @@ const Details = {
             let newChild = document.createElement("li");
             newChild.classList.add('coverType-list-item');
             newChild.innerText = cover;
+            list.appendChild(newChild);
+        }); 
+
+        
+        //// Locations list items
+        list = document.getElementById('locations-list');
+        Teacher.data.locations.forEach(location => {
+            let newChild = document.createElement("li");
+            newChild.classList.add('locations-list-item');
+            //location = location[0].toUpperCase() + location.slice(1-location.length);
+            newChild.innerText = location;
             list.appendChild(newChild);
         });
 
@@ -398,6 +445,7 @@ const Details = {
         Details.el.phone = document.getElementById('details-phone');
         Details.el.centre = document.getElementById('details-centre');
         Details.el.coverType = document.getElementById('details-coverType');
+        Details.el.locations = document.getElementById('details-locations');
         Details.el.endDate = document.getElementById('details-endDate');
         Details.el.title = document.getElementById('details-status-title');
         Details.el.subtitle = document.getElementById('details-status-subtitle');
@@ -622,8 +670,8 @@ const init = async () => {
             Details.updateHtml();
             Ui.showDetails();
         } else {
-            Ui.showSignup()
-            //Ui.showForm(); /// For dev of Form only; delete when done
+            //Ui.showSignup()
+            Ui.showForm(); /// For dev of Form only; delete when done
         }
 
     } catch (error) {
@@ -692,7 +740,7 @@ const TestTeacherData_EXISTS = {
         name: "Freddie Mercury",
         email: "freddie@mymail.net",
         phone: "012 345 6789",
-        centre: "TC-HCMC99",
+        centre: "TC-HCMC12",
         availability: {
             monday: [false, false, true],
             tuesday: [false, false, false],
@@ -703,6 +751,7 @@ const TestTeacherData_EXISTS = {
             sunday: [false, true, false]
         },
         coverType: ["ILA / OLA Classes", "Public School Classes"],
+        locations: ["North", "East", "Central"],
         endDate: "05/06/2024"
     }
 }

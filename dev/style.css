@@ -237,10 +237,10 @@ form {
     color: #666;
 }
 
-.user-form-coverType {
+#user-form-coverType, #user-form-locations {
     background-color: #fbfbfb;
 }
-.coverType-check-group {
+.coverType-check-group, .locations-check-group {
     padding: 6px;
 }
 
@@ -249,7 +249,8 @@ form {
     color: red;
 }
 
-.coverType-check-group > label {
+.coverType-check-group > label,
+.locations-check-group > label {
     cursor:pointer;
 }
 
