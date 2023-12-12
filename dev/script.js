@@ -1,7 +1,7 @@
 //// DEV GLOBALS!!!
 const dev_isTeacherExist = false;
-const TestEnvironment = true;
-const timeout = 0;
+const TestEnvironment = true; 
+const timeout = 3000;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
 
@@ -182,8 +182,8 @@ const Form = {
                 }
             });
             setDisplay(Form.el.errorMsg, 'show');
-            Form.el.title.scrollIntoView({behavior: 'smooth'});
-            ///console.log(invalids);
+            window.scrollTo(0, {behavior: 'smooth'});
+            
             return false;
         }
 
@@ -622,8 +622,8 @@ const init = async () => {
             Details.updateHtml();
             Ui.showDetails();
         } else {
-            //Ui.showSignup()
-            Ui.showForm(); /// For dev of Form only; delete when done
+            Ui.showSignup()
+            //Ui.showForm(); /// For dev of Form only; delete when done
         }
 
     } catch (error) {
@@ -644,6 +644,7 @@ init();
 function setDisplay(el, action) {
     if (action === 'show') {
         el.classList.remove('nodisplay');
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     if (action === 'hide') {

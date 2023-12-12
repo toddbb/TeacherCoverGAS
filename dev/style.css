@@ -80,7 +80,7 @@ body {
     grid-template-rows: 80px 1fr;
     height: 100vh;
     margin: 0;
-    padding: 0 5px;
+    padding: 0;
     background-color: var(--color-ila);
     box-sizing: border-box;
     font-family: 'Mulish', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -124,14 +124,14 @@ header * {
 
 .signup-instructions h3 { 
     margin: 0 0 0px 20px;
-    font-size: 1.3rem;
+    font-size: 1.15rem;
 }
 
 .signup-instruct-row {
     display: flex;
     margin: 35px;
     align-items: center;
-    font-size: 1.15rem;
+    font-size: 1rem;
 }
 
 .signup-instruct-number {
@@ -139,14 +139,14 @@ header * {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    height: 35px;
-    width: 35px;
-    margin: 0 20px 0 0;
+    height: 30px;
+    width: 30px;
+    margin: 0 15px 0 0;
     padding: 5px;
     border-radius: 50%;
     background-color: #199319;
     color: #F0F0F0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     box-shadow: 0 0 7px -3px #666;
 }
@@ -173,7 +173,7 @@ header * {
 
 .signup-faq-container > h4 {
     text-align: left;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .faq-row {
@@ -183,6 +183,128 @@ header * {
 .faq-title {
     font-weight: bold;
 }
+
+.faq-text {
+    font-size: 0.9rem;
+}
+
+
+
+/***********************************************/
+/**          Section: FORM                     */
+/***********************************************/
+
+.user-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Base styling for the form */
+form {
+    max-width: 600px;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Styling for labels */
+.user-form-label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Common styling for all input fields */
+.user-form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for description text below the select input */
+.user-form-description {
+    display: block;
+    margin: 5px 0 0px 5px;
+    text-align: left;
+    font-size: 12px; 
+    color: #666;
+}
+
+.user-form-coverType {
+    background-color: #fbfbfb;
+}
+.coverType-check-group {
+    padding: 6px;
+}
+
+.required-asteriks {
+    font-size: 1.1rem;
+    color: red;
+}
+
+.coverType-check-group > label {
+    cursor:pointer;
+}
+
+/* Specific styling for checkboxes within the table */
+input[type="checkbox"] {
+    cursor: pointer;
+    transform: scale(1.5);
+}
+
+/* Table styling */
+#user-form-availability {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#user-form-availability th, #user-form-availability td {
+    text-align: center;
+    padding: 8px;
+}
+
+#user-form-availability th {
+    background-color: #eee;
+}
+
+#user-form-availability tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
+
+#user-form-availability > tr > td:nth-child(1) {
+    background-color: #16bc16;
+}
+
+#user-form-submit, #user-form-edit {
+}
+
+.form-controls {
+    display: flex;
+    align-items: center;
+    margin: 10px 0 40px 0;
+}
+
+/*  Form Validation */
+#form-title-error {
+    padding: 3px 0;
+    margin-bottom: 10px;
+    background-color: #f9a8a8;
+    border-radius: 4px;
+}
+
+.invalidInput {
+    border: 1px solid #e42e2e;
+}
+
+
+
 
 
 /***********************************************/
@@ -267,122 +389,6 @@ header * {
 }
 
 
-/***********************************************/
-/**          Section: FORM                     */
-/***********************************************/
-
-.user-form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Base styling for the form */
-form {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Styling for labels */
-.user-form-label {
-    display: inline-block;
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #333;
-}
-
-/* Common styling for all input fields */
-.user-form-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Style for description text below the select input */
-.user-form-description {
-    display: block;
-    margin: 5px 0 0px 5px;
-    text-align: left;
-    font-size: 12px; 
-    color: #666;
-}
-
-.user-form-coverType {
-    background-color: #fbfbfb;
-}
-.coverType-check-group {
-    padding: 6px;
-}
-
-.required-asteriks {
-    font-size: 1.1rem;
-    color: red;
-}
-
-
-/* Specific styling for checkboxes within the table */
-input[type="checkbox"] {
-    cursor: pointer;
-    transform: scale(1.3);
-}
-
-/* Table styling */
-#user-form-availability {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#user-form-availability th, #user-form-availability td {
-    text-align: center;
-    padding: 8px;
-}
-
-#user-form-availability th {
-    background-color: #eee;
-}
-
-#user-form-availability tr:nth-child(even) {
-    background-color: #fdfdfd;
-}
-
-#user-form-availability > tr > td:nth-child(1) {
-    background-color: #16bc16;
-}
-
-#user-form-submit, #user-form-edit {
-}
-
-.form-controls {
-    display: flex;
-    align-items: center;
-    margin: 10px 0 40px 0;
-}
-
-/*  Form Validation */
-#form-title-error {
-    padding: 3px 0;
-    margin-bottom: 10px;
-    background-color: #f9a8a8;
-    border-radius: 4px;
-}
-
-.invalidInput {
-    border: 1px solid #e42e2e;
-}
-
-
-
-
-
-
 
 
 
@@ -402,6 +408,8 @@ input[type="checkbox"] {
     width: 150px;
     margin-top: 100px; 
 }
+
+
 
 /***********************************************/
 /**             Section: LOADER                */
@@ -448,6 +456,98 @@ input[type="checkbox"] {
 /**                 RESPONSIVE                 */
 /***********************************************/
 
-@media (max-width: 400px) {
-    
-  }
+@media only screen and (max-width: 960px) {
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    /* section {
+        background-color: rgb(255, 190, 190);
+    } */
+}
+
+
+@media only screen and (max-width: 600px) {
+    /* Empty styles for 960px and below */
+    header { font-size: 0.8rem; }
+    /* section {
+        background-color: rgb(187, 255, 187);
+    } */
+
+    /**** SECTION: Signup  ****/
+    .signup-instruct-row {
+        margin: 20px 10px;
+    }
+    .signup-instruct-number {
+        height: 20px;
+        width: 20px;
+        margin: 0 7px 0 0;
+    }
+    .signup-faq-container {
+        margin: 25px 10px;
+    }
+
+    /**** SECTION: Details *****/
+    .details-container {
+        margin: 25px 0 10px 0;
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    html { font-size: 92.5%; }
+    /* Empty styles for 960px and below */
+
+    .btn {
+        height: 30px;
+        width: 100px;
+        margin: 0 15px;
+    }
+    section {
+        padding: 0 10px;
+        /* background-color: rgb(227, 180, 254); */
+    }
+
+    /***** SECTION: Form *****/
+    form {
+        border: none;
+        border-radius: 0px;
+        padding: 20px 10px;
+        margin: 0px auto 10px auto;
+        box-shadow: none;
+        background-color: #fafafa;
+    }
+
+    form * {
+        font-size: 93% !important;
+    }
+
+    /***** SECTION: Details *****/
+    .details-container {
+        padding: 15px 5px;
+        border: none;
+        border-radius: 3px;
+        box-shadow: none;
+        background-color: #FEFEFE;
+    }
+    #details-availability-table {
+        font-size: 80%;
+    }
+    #details-availability-table .material-symbols-outlined {
+        font-size: 18px;
+    }
+
+    /***** SECTION: Unregister ******/
+    .section-unregister h1 {
+        font-size: 1.3rem;
+    }
+
+}
+
+
+@media only screen and (max-width: 320px) {
+    /* Empty styles for 960px and below */
+    /* section {
+        background-color: rgb(248, 248, 185);
+    } */
+}
