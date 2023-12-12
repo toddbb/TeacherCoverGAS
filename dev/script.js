@@ -473,7 +473,7 @@ const Ui = {
 
 
 //// DEV GLOBAL!!!
-const dev_isTeacherExist = true;
+const dev_isTeacherExist = false;
 const timeout = 2000;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
