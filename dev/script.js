@@ -1,6 +1,13 @@
-/*********************************************************/
-/**               Signup Section                       **/
-/*********************************************************/
+//// DEV GLOBALS!!!
+const dev_isTeacherExist = false;
+const TestEnvironment = true;
+const timeout = 0;
+const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
+
+
+/********************************************************************************/
+/**                          SECTION: Signup                                   **/
+/********************************************************************************/
 const Signup = {
 
     el: {},
@@ -29,9 +36,9 @@ const Signup = {
 }
 
 
-/*********************************************************/
-/**                 Form Section                        **/
-/*********************************************************/
+/********************************************************************************/
+/**                            SECTION: Form                                   **/
+/********************************************************************************/
 const Form = {
     el: {},
     input: {},
@@ -140,8 +147,46 @@ const Form = {
         return objAvail;
     },
 
-    validateResponses: (resp) => {
-        /// TO DO: validate responses; if not valid or missing, display error in status in form inputs
+    validateResponses: (userInput) => {
+        //// reset all validation errors and messages
+        let inputs = document.querySelectorAll('#user-form-input');
+        inputs.forEach(input => {
+            input.classList.remove('invalidInput');
+        });
+        setDisplay(Form.el.errorMsg, 'hide');       
+
+        let invalids = [];
+
+        //// validate most form inputs to make sure they are not blank
+        for (prop in userInput) {
+            if (!(userInput[prop].length > 0) && prop != 'endDate' && prop != 'availability') {
+                invalids.push(prop);
+            }
+        }
+        //// validate phone number        
+        const regex = /^[+()\d][\d\s-()+]+$/;
+        if (!regex.test(userInput.phone) || userInput.phone.length < 7) { invalids.push('phone'); };
+
+        /// validate availability
+        let availIsValid = false;
+        for (day in userInput.availability) {
+            userInput.availability[day].forEach(time => availIsValid = time || availIsValid)
+        }
+
+        if (!availIsValid) { invalids.push("availability")};
+        
+        if (invalids.length > 0) {            
+            invalids.forEach(inputName => {
+                if (!Form.input[inputName].classList.contains('invalidInput')) {
+                    Form.input[inputName].classList.add('invalidInput');
+                }
+            });
+            setDisplay(Form.el.errorMsg, 'show');
+            Form.el.title.scrollIntoView({behavior: 'smooth'});
+            ///console.log(invalids);
+            return false;
+        }
+
         return true;
     },
 
@@ -159,7 +204,6 @@ const Form = {
         formInputs.availability = Form.getAvailResponses();
         formInputs.coverType = Form.getCoverTypesResponses();
 
-        
         let resp = Form.validateResponses(formInputs);
         //console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
 
@@ -191,7 +235,10 @@ const Form = {
 
 
     init: (centres) => {
+
         Form.el.title = document.getElementsByClassName('form-status-title')[0];
+        Form.el.errorMsg = document.getElementById('form-title-error');
+
         Form.input.name = document.getElementById('user-form-name');
         Form.input.email = document.getElementById('user-form-email');
         Form.input.phone = document.getElementById('user-form-phone');
@@ -231,9 +278,9 @@ const Form = {
     }
 }
 
-/*********************************************************/
-/**               Details Section                       **/
-/*********************************************************/
+/********************************************************************************/
+/**                            SECTION: Details                                **/
+/********************************************************************************/
 const Details = {
 
     el: {},
@@ -369,9 +416,9 @@ const Details = {
     }
 }
 
-/*********************************************************/
-/**               Unregister                            **/
-/*********************************************************/
+/********************************************************************************/
+/**                           SECTION: Unregister                              **/
+/********************************************************************************/
 const Unregister = {
     
     button: {},
@@ -389,22 +436,12 @@ const Unregister = {
 }
 
 
-/*********************************************************/
-/**              Teacher                                **/
-/*********************************************************/
-const Teacher = {    
-    data: {},
-    userEmail: null,
-
-    isExist: () => {
-        return Object.keys(Teacher.data).length > 0 && Teacher.userEmail.length > 0;
-    }
-};
 
 
-/*********************************************************/
-/**               Loader Section                       **/
-/*********************************************************/
+
+/********************************************************************************/
+/**                             SECTION: Loader                                **/
+/********************************************************************************/
 const Loader = {
     el: {},
     vars: {
@@ -430,9 +467,9 @@ const Loader = {
 
 
 
-/*********************************************************/
-/**              User Interface (UI)                    **/
-/*********************************************************/
+/********************************************************************************/
+/**                             METHOD: Ui                                     **/
+/********************************************************************************/
 const Ui = {
 
     el: {},
@@ -471,56 +508,95 @@ const Ui = {
 }
 
 
+/********************************************************************************/
+/**                             METHOD: Teacher                                **/
+/********************************************************************************/
+const Teacher = {    
+    data: {},
+    userEmail: null,
 
-//// DEV GLOBAL!!!
-const dev_isTeacherExist = false;
-const timeout = 2000;
-const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
+    isExist: () => {
+        return Object.keys(Teacher.data).length > 0 && Teacher.userEmail.length > 0;
+    }
+};
 
-/*********************************************************/
-/**             SERVER FUNCTIONS                        **/
-/*********************************************************/
+
+/********************************************************************************/
+/**                             METHOD: Server                                 **/
+/********************************************************************************/
 const Server = {
 
     writeUserData: async (payload) => {
-        ///// simulate call to server
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(true);
-            }, timeout);
-        });
+
+        if (TestEnvironment) {
+            ///// running in test environment; simulate call to server
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(true);
+                }, timeout);
+            });
+        } else {
+            ///// running in Google Web App environment            
+            return new Promise((resolve, reject) => {
+                google.script.run
+                .withSuccessHandler(resolve)
+                .withFailureHandler(reject)
+                .writeDataToTable(payload);
+            });
+        }
     },
 
     deleteUser: async (userEmail) => {
-        ///// simulate call to server
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(true);
-            }, timeout)
-        })
+        
+        if (TestEnvironment) {
+            ///// running in test environment; simulate call to server
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(true);
+                }, timeout)
+            });
+        } else {
+            ///// running in Google Web App environment            
+            return new Promise((resolve, reject) => {
+                google.script.run
+                .withSuccessHandler(resolve)
+                .withFailureHandler(reject)
+                .deleteUser(userEmail);
+            });
+        }
     },
 
-
-    getAll: async () => {
-        ///// simulate call to server
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                let teacher = dev_isTeacherExist ? TestTeacherData_EXISTS : TestTeacherData_NONE;
-                let data = {                    
-                    centres: allCentres,
-                    teacher: teacher
-                }
-                resolve(data);
-            }, timeout);
-        });
+    ////// returns the centre table, userEmail and user data
+    getAll: async () => {        
+        if (TestEnvironment) {
+            ///// running in test environment; simulate call to server        
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    let teacher = dev_isTeacherExist ? TestTeacherData_EXISTS : TestTeacherData_NONE;
+                    let data = {                    
+                        centres: allCentres,
+                        teacher: teacher
+                    }
+                    resolve(data);
+                }, timeout);
+            });
+        } else {
+            ///// running in Google Web App environment            
+            return new Promise((resolve, reject) => {
+                google.script.run
+                .withSuccessHandler(resolve)
+                .withFailureHandler(reject)
+                .getAll(userEmail);
+            });
+        }
     }    
 }
 
 
 
-
-///////////////////////////  ALL CODE BELOW FOR DEV IN LIVE SERVER ONLY!!!!  ////////////////////////////////
-
+/********************************************************************************/
+/**                             METHOD: Init                                   **/
+/********************************************************************************/
 const init = async () => {
 
     Ui.init();
@@ -546,8 +622,8 @@ const init = async () => {
             Details.updateHtml();
             Ui.showDetails();
         } else {
-            Ui.showSignup()
-            ///Ui.showForm(); /// For dev of Form only; delete when done
+            //Ui.showSignup()
+            Ui.showForm(); /// For dev of Form only; delete when done
         }
 
     } catch (error) {
@@ -557,14 +633,14 @@ const init = async () => {
     
 }
 
-init()
+
+init();
 
 
 
-
-/*********************************************************/
-/**             HELPER FUNCTIONS                        **/
-/*********************************************************/
+/********************************************************************************/
+/**                           Helper Functions                                 **/
+/********************************************************************************/
 function setDisplay(el, action) {
     if (action === 'show') {
         el.classList.remove('nodisplay');
@@ -592,9 +668,14 @@ function convertToDMY(string) {
 
 
 
-/*********************************************************/
-/**          DEVELOPMENT ONLY!!!!!!!!!                  **/
-/*********************************************************/
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////           ALL CODE BELOW FOR DEV IN LIVE SERVER ONLY!!!!         //////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 function delay(time, msg) {
     return new Promise(resolve => {

@@ -288,6 +288,7 @@ form {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
+
 /* Styling for labels */
 .user-form-label {
     display: inline-block;
@@ -365,6 +366,21 @@ input[type="checkbox"] {
     margin: 10px 0 40px 0;
 }
 
+/*  Form Validation */
+#form-title-error {
+    padding: 3px 0;
+    margin-bottom: 10px;
+    background-color: #f9a8a8;
+    border-radius: 4px;
+}
+
+.invalidInput {
+    border: 1px solid #e42e2e;
+}
+
+
+
+
 
 
 
@@ -433,7 +449,5 @@ input[type="checkbox"] {
 /***********************************************/
 
 @media (max-width: 400px) {
-    .header, .main {
-      padding: 0 20px;
-    }
+    
   }
