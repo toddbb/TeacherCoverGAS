@@ -1,15 +1,3 @@
-/**********************************************************/
-/**                     GLOBAL VARS                       */
-/**********************************************************/
-
-const $ss = SpreadsheetApp.getActiveSpreadsheet();
-
-const $sheets = {
-  dB: $ss.getSheetByName('Database'),
-  settings: $ss.getSheetByName('Settings')
-}
-
-
 /*************************************************************/
 /**                    READ/WRITE DATABASE                   */
 /*************************************************************/
