@@ -2,7 +2,8 @@
 
 //// DEV GLOBALS!!!
 const dev_isTeacherExist = true;
-const TestEnvironment = true; 
+const TestEnvironment = false; 
+const testErrorHandling = true;
 const timeout = 0;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
@@ -67,6 +68,11 @@ const Form = {
     populateFields: () => {
         if (Teacher.isExist()) {
             for (prop in Teacher.data) {
+                /* if (prop === 'endDate') {
+                  let val = convertToYMD(Teacher.data[prop]) || null
+                } */
+
+
                 let val = prop === 'endDate' ? convertToYMD(Teacher.data[prop]) : Teacher.data[prop];
                 Form.input[prop].value = val;
             }
@@ -128,12 +134,12 @@ const Form = {
 
     setAvail: () => {
         let avail = Teacher.data.availability;
-        for (prop in avail) {
-            let day = avail[prop];
+        for (day in avail) {
+            let vals = avail[day];
             let times = ["Morning", "Afternoon", "Evening"];
-            day.forEach((boolean, index) => {
-                if (boolean) {
-                    document.getElementById(prop + times[index]).checked = true;
+            vals.forEach((val, index) => {
+                if (val) {
+                    document.getElementById(day + times[index]).checked = true;
                 }
             })
         }
@@ -186,6 +192,7 @@ const Form = {
 
         //// validate most form inputs to make sure they are not blank
         for (prop in userInput) {
+            //console.log(`prop=${prop}; value=${userInput[prop]}; length=${userInput[prop].length}`);
             if (!(userInput[prop].length > 0) && prop != 'endDate' && prop != 'availability') {
                 invalids.push(prop);
             }
@@ -234,7 +241,7 @@ const Form = {
         formInputs.endDate = convertToDMY(formInputs.endDate);  
 
         let resp = Form.validateResponses(formInputs);
-        //console.log(`Form Submitted. JSON object = ${JSON.stringify(responses)}`);
+        console.log(`Form Submitted. JSON object = ${JSON.stringify(formInputs)}`);
 
         if (resp) {
             Ui.hideForm();
@@ -243,7 +250,7 @@ const Form = {
             Ui.showLoader();
 
             try {
-                let status = await Server.writeUserData(resp, "submit");
+                let status = await Server.writeUserData(formInputs);
                 if (status) {
                     Teacher.data = formInputs;
                     Details.updateHtml();
@@ -255,12 +262,13 @@ const Form = {
                     Details.setTitle(title)
                     Ui.hideLoader();
                     Ui.showDetails();
+                } else {
+                  throw new Error ("Call to write data returned 'false'");
                 }
             } catch (error) {
                 console.log(`Error submitting registration to server. Error message: ${error}`);
             }
-        }
-        
+        }        
     },
 
 
@@ -299,15 +307,15 @@ const Form = {
             }
         });
 
-        // Events for datepicker
-        Form.input.endDate.addEventListener('click', (e) => {
+        // Events for datepicker (NOTE: This doesn't work inside cross-origin iFrame)
+       /*  Form.input.endDate.addEventListener('click', (e) => {
             e.target.showPicker();
         })
         Form.input.endDate.addEventListener('keydown', (e) => {
             if (e.key === 'Delete' || e.key === 'Backspace') {
                 e.target.value = '';
             }
-        })
+        }) */
         
     }
 }
@@ -571,6 +579,9 @@ const Teacher = {
 };
 
 
+
+
+
 /********************************************************************************/
 /**                             METHOD: Server                                 **/
 /********************************************************************************/
@@ -636,7 +647,7 @@ const Server = {
                 google.script.run
                 .withSuccessHandler(resolve)
                 .withFailureHandler(reject)
-                .getAll(userEmail);
+                .getAll();
             });
         }
     }    
@@ -660,6 +671,8 @@ const init = async () => {
 
         let response = await Server.getAll();
 
+        console.log(response);
+
         Teacher.data = response.teacher.data;
         Teacher.userEmail = response.teacher.userEmail;
         
@@ -672,16 +685,29 @@ const init = async () => {
             Details.updateHtml();
             Ui.showDetails();
         } else {
-            //Ui.showSignup()
-            Ui.showForm(); /// For dev of Form only; delete when done
+            Ui.showSignup()
+            //Ui.showForm(); /// For dev of Form only; delete when done
         }
 
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 
     
 }
+
+
+/* function preventIframeResize() {
+  var iframe = document.getElementById("userHtmlFrame");
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+}
+
+window.onresize = function() {
+  preventIframeResize();
+};
+
+preventIframeResize(); */
 
 
 init();
@@ -706,7 +732,7 @@ function convertToYMD(string) {
     //// date in 'dd/mm/yyyy' format
     let arr = string.split("/");
     //// new date in 'yyyy-MM-dd' format    
-    return arr[2] + "-" + arr[1] + "-" + arr[0];
+    return arr.length === 3 ? (arr[2] + "-" + arr[1] + "-" + arr[0]) : "";
 }
 
 
@@ -714,7 +740,7 @@ function convertToDMY(string) {
     //// date in 'yyyy-MM-dd' format
     let arr = string.split("-");
     //// new date in 'dd/mm/yyyy' format    
-    return arr[2] + "/" + arr[1] + "/" + arr[0];
+    return arr.length === 3 ? (arr[2] + "/" + arr[1] + "/" + arr[0]) : "";
 }
 
 

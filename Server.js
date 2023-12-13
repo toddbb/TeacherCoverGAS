@@ -1,11 +1,11 @@
-
-
-/*********************************************************/
-/**               INITIALIZATIONS                       **/
-/*********************************************************/
+/******************************************************************/
+/**                      INITIALIZATIONS                         **/
+/******************************************************************/
 // This function is executed when the web app is loaded
 function doGet() {
-    return HtmlService.createTemplateFromFile('Index').evaluate();
+    return HtmlService.createTemplateFromFile('Index')
+      .evaluate()
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
 }
 
 // This function adds the Script and Stylesheet to Index.html
@@ -14,31 +14,122 @@ function include(filename) {
 }
 
 
-/*********************************************************/
-/**          SERVER CUSTOM FUNCTIONS                    **/
-/*********************************************************/
 
-// Function to return the user's email who is running the web app
-function getUserEmail() {
-  return Session.getActiveUser().getEmail();
+
+/******************************************************************/
+/**                    ENDPOINTS                                 **/
+/******************************************************************/
+
+/*********************************
+ * getAll()
+ * Retrieves and returns an object with Teacher data and all Centres  
+ * *******************************/
+function getAll() {
+
+  let userEmail = Session.getActiveUser().getEmail();
+
+  //// get user data; if it doesn't exist, return an empty object
+  const userArray = getUserFromDatabase(userEmail);
+  const data = userArray ? createTeacherObject(userArray, userEmail) : {};
+
+  //// get list of centres
+  const centreVals = $sheets.settings.getRange('A2:A').getValues();
+  const centres = centreVals.map(centre => centre[0]).filter(centre => centre.length > 0);
+
+  return { 
+    teacher: {
+      userEmail: userEmail,
+      data: data
+    },
+    centres: centres
+  }
+
 }
 
-// Find teacher in the 'Teacher Availability' table
-// If exists, return all info and preferences
-// If does not exist, return the email only
-function getUserDataFromTable() {
 
-  let userEmail = getUserEmail();
 
-  const lastRow = $sheets.tAvail.getLastRow();
-  const lastCol = $sheets.tAvail.getLastColumn();
+/*********************************
+ * writeDataToTable()
+ * Writes the user info to a table;
+ * If user already exists, overwrite; if user is new, append new row 
+ * *******************************/
+function writeDataToTable (payload) {
 
-  const data = $sheets.tAvail.getRange(2, 1, lastRow - 1, lastCol).getValues();
-  const userData = data.filter(row => row[1] === userEmail)[0];   /// only return one row, in case of duplication
+  //// check if the active user is the same as the person in the email
+  const user = Session.getActiveUser().getEmail(); 
+  if (user != payload.email) { return false };
 
-  return userData ? new Teacher(...userData) : new Teacher(null, userEmail);
+  Logger.log(payload);
+
+  const writeArray = createTeacherArray(payload);
+
+  const userArray = getUserFromDatabase(payload.email);
+
+  Logger.log(`endDate value is ${payload.endDate}; typeof = ${typeof payload.endDate}`);
+
+  //// write data; if exists, then overwrite; if new, then append
+  if (userArray) {
+    const allData = readAllDatabaseVals();
+    const index = allData.map(row => row[1]).indexOf(payload.email);
+    const userRange = $sheets.dB.getRange(index+2,1,1, $sheets.dB.getLastColumn());
+    userRange.setValues([writeArray])
+  } else {
+    $sheets.dB.appendRow(writeArray);
+  }
+
+  return true;
+}
+
+
+
+/*********************************
+ * deleteUser()
+ * Remove user from the database
+ * *******************************/
+function deleteUser(email) {
+
+  //// check if the active user is the same as the person in the email
+  const user = Session.getActiveUser().getEmail(); 
+  if (user != email) { return false };
+
+  const allData = readAllDatabaseVals();
+  const index = allData.map(row => row[1]).indexOf(email);
+
+  $sheets.dB.deleteRow(index+2);
+
+  return true;
+
 
 }
+
+
+
+function test_3() {
+  writeDataToTable(testTeacher.data);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -57,8 +148,9 @@ function setData(data) {
 }
 
 
-
-
+function testGetAll() {
+  console.log(getAll());
+}
 
 
 function testClass() {  

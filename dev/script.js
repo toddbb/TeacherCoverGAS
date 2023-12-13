@@ -1,7 +1,8 @@
 //// DEV GLOBALS!!!
 const dev_isTeacherExist = true;
-const TestEnvironment = true; 
-const timeout = 0;
+const TestEnvironment = true;
+const testErrorHandling = false;
+const timeout = 1000;
 const allCentres = ["TC-HCMC2", "TC-HCMC5", "TC-HCMC8", "TC-HCMC12", "TC-HCMC14", "TC-HCMC18"];
 
 
@@ -241,7 +242,11 @@ const Form = {
             Ui.showLoader();
 
             try {
+
                 let status = await Server.writeUserData(resp, "submit");
+
+                //if (testErrorHandling) { throw new Error("Testing Error Handler; func: Form.submit()")}
+
                 if (status) {
                     Teacher.data = formInputs;
                     Details.updateHtml();
@@ -254,8 +259,12 @@ const Form = {
                     Ui.hideLoader();
                     Ui.showDetails();
                 }
-            } catch (error) {
-                console.log(`Error submitting registration to server. Error message: ${error}`);
+
+            } catch (error) { 
+                console.error(error);               
+                const suggestion = "Please make sure you are logged into your ILA account and refresh your browser.";
+                const errorMsg = "Error: Could not connect to the database (func: Form.submit)"
+                ErrorHandler.activateError(errorMsg, suggestion);
             }
         }
         
@@ -418,7 +427,10 @@ const Details = {
         Ui.showLoader();
 
         try {
+
             let status = await Server.deleteUser(Teacher.userEmail);
+
+            //if (testErrorHandling) { throw new Error ("Testing Error Handler; func: Details.unregister()"); }
 
             if (status) {
                 Teacher.data = {};
@@ -434,7 +446,10 @@ const Details = {
             }
 
         } catch (error) {
-            console.log(`Oops. There was a problem deleting the user. Error: ${error}`);
+            console.error(error);               
+            const suggestion = "Please make sure you are logged into your ILA account and refresh your browser.";
+            const errorMsg = "Error: Could not connect to the database (func: Details.unregister)"
+            ErrorHandler.activateError(errorMsg, suggestion);
         }
     },
 
@@ -512,6 +527,52 @@ const Loader = {
         Loader.el.subtitle = document.getElementById('loader-subtitle');
     }
 }
+
+
+
+/********************************************************************************/
+/**                             METHOD: Error Handling                         **/
+/********************************************************************************/
+const ErrorHandler = {
+
+    el: {},
+    button: {},
+
+    hideAllSections: () => {
+        const sectionCollection = document.getElementsByTagName('section');
+        [...sectionCollection].forEach(section => {
+            setDisplay(section, 'hide');
+        })
+    },
+
+    activateError: (error, suggest) => {
+        ErrorHandler.hideAllSections();
+        ErrorHandler.el.description.innerText = error;
+        let urlSuffix = error.split(" ").join("+");
+        let url = "https://docs.google.com/forms/d/e/1FAIpQLSfZUQRPo10plLvPLEFqMcTfVB9VWM0eJMLBvE819fBpFPgcoQ/viewform?usp=pp_url&entry.1204352290=%7BERRORMESSAGE%7D";
+        url = url.replace("%7BERRORMESSAGE%7D", urlSuffix);
+        ErrorHandler.el.feedbackLink.href = url;
+        Ui.showStatus();
+    },
+
+
+    init: () => {
+
+        ErrorHandler.el.title = document.getElementById('section-status-title');
+        ErrorHandler.el.subtitle = document.getElementById('section-status-subtitle');
+        ErrorHandler.el.description = document.getElementById('section-status-description');
+        ErrorHandler.el.suggestion = document.getElementById('section-status-suggestion');
+        ErrorHandler.el.feedbackLink = document.getElementById('feedback-link');
+
+        ErrorHandler.button.refresh = document.getElementById('btn-status');
+
+        /// TO DO: test this in GAS iFrame
+        ErrorHandler.button.refresh.addEventListener('click', () => { window.location.reload(); });
+    }
+
+
+
+};
 
 
 
@@ -652,11 +713,15 @@ const init = async () => {
     Details.init();
     Unregister.init();
     Signup.init();
+    ErrorHandler.init();
 
 
     try {
 
         let response = await Server.getAll();
+
+        
+        //if (testErrorHandling) { throw new Error("Testing Error Handler; func: init()")}
 
         Teacher.data = response.teacher.data;
         Teacher.userEmail = response.teacher.userEmail;
@@ -675,7 +740,10 @@ const init = async () => {
         }
 
     } catch (error) {
-        console.log(error)
+        console.error(error);               
+        const suggestion = "Please make sure you are logged into your ILA account and refresh your browser.";
+        const errorMsg = "Error: Could not connect to the database (func: init)"
+        ErrorHandler.activateError(errorMsg, suggestion);
     }
 
     

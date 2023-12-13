@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <head>
+  <head>    
+    <base target="_top">
     <title>ILA Cover Manager</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +57,7 @@
           </div>
           <div class="faq-row">
             <div class="faq-title">Do I have to accept all covers?</div>
-            <div class="faq-text">No. However, if you are registered here, we ask that you accept <i>most</i> covers offered to you. If you are unable to many cover classes, we would need to remove you from the registration list.</div>
+            <div class="faq-text">No. However, if you are registered here, we ask that you accept <i>most</i> covers offered to you. If you are unable to cover many classes, you could be removed from the registration list.</div>
           </div>
           <div class="faq-row">
             <div class="faq-title">Will lesson plans be provided for me?</div>
@@ -341,10 +342,25 @@
         </div>
       </section>
 
-      <!--------------------------------------- STATUS (DELETE)  -------------------------------------------->
+      <!--------------------------------------- STATUS  -------------------------------------------->
 
       <section class="section-status nodisplay">
-        <h1>This is the status page</h1>
+        <div>
+          <h1 id="section-status-title">Oops. Something went wrong :(</h1>
+          <h3 id="section-status-subtitle">We're experiencing some difficulties.</h3>
+          <br><br>
+          <p id="section-status-description"></p>
+          <p id="section-status-suggestion">Please make sure you are logged into your ILA account and refresh your browser.</p>
+        </div>
+        <div class="btn" id="btn-status">
+          <span class="btn-text">Refresh Page</span>
+          <span class="material-symbols-outlined">refresh</span>
+        </div>
+        <div>
+          <p>To report recurring issues, please let us know your feedback:</p>
+          <a href="https://www.google.com/" target="_blank" id="feedback-link">Feedback Form</a>
+        </div>
+
       </section>
       
       <!--------------------------------------- LOADER -------------------------------------------->

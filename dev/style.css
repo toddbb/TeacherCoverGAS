@@ -47,7 +47,7 @@ section {
     height: 40px;
     width: 130px;
     margin: 0 20px;
-    padding: 3px;
+    padding: 5px;
     background-color: var(--color-ila);
     border-radius: 7px;
     border: none;
@@ -406,7 +406,7 @@ input[type="checkbox"] {
 }
 
 .section-unregister .btn {
-    width: 150px;
+    width: 155px;
     margin-top: 100px; 
 }
 
@@ -442,6 +442,27 @@ input[type="checkbox"] {
     100% { transform: rotate(360deg); }
 }
 
+
+/***********************************************/
+/**             Section: STATUS               */
+/***********************************************/
+.section-status, .section-status div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#section-status-title {
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+
+#btn-status {
+    flex-direction: row;
+    width: 140px;
+}
 
 
 /***********************************************/
@@ -542,6 +563,12 @@ input[type="checkbox"] {
     .section-unregister h1 {
         font-size: 1.3rem;
     }
+
+    /***** SECTION: Unregister ******/
+    .section-status {
+        font-size: 90%;
+    }
+
 
 }
 
