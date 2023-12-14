@@ -8,19 +8,17 @@ const getHeaders = () => {
 }
 
 
-/************* */
+/********* RETURN ALL VALUES IN THE DATABASE AS A 2D ARRAY    ********/
 const readAllDatabaseVals = () => {
   //// get Teacher info from Teacher Database
   const lastRow = $sheets.dB.getLastRow();
   const lastCol = $sheets.dB.getLastColumn();
-
   return $sheets.dB.getRange(2, 1, lastRow - 1, lastCol).getValues();
 }
 
-
+/*********  RETURN INFORMATION ABOUT A SINGLE USER IN A 1D ARRAY    ********/
 const getUserFromDatabase = (email) => {
   const allData = readAllDatabaseVals();
-
   return allData.filter(row => row[1] === email)[0];
 }
 

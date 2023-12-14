@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>    
+    <base target="_top">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <link rel="stylesheet" href="dev/modal_style.css">    
+    <!-- <?!= include('Modal_Stylesheet'); ?> -->
+    
+  </head>
+  <body>
+    <section class="section-info">
+      <div class="section-info-teacher">
+        <span class="info-title" id="info-name">Benjamin Franklin</span>
+        <span class="info-subtitle">&nbsp;(</span>
+        <span class="info-subtitle" id="info-centre">OLA-HCMC19</span>
+        <span class="info-subtitle">)</span>
+      </div>
+      <div class="btn btn-closeWindow">Close
+        <span class="material-symbols-outlined">close</span>
+      </div>
+    </section>
+    <section class="section-details">
+      <div class="tab-menu">
+        <div class="tab tab-active" id="tab-notes">Notes</div>
+        <div class="tab" id="tab-newNote">Add Note</div>
+        <div class="tab" id="tab-remove">Remove</div>
+      </div>
+      <div class="details-main">
+        <div class="main-section" id="main-section-notes">
+          <div class="note" id="note-1">
+            <div class="note-title">
+              <span class="note-title-name" id="note-addedBy">Nguyen Thi Minh Khai</span>
+              <span class="note-title-email" id="note-email">[nguyentmkhai@ilavietnam.edu.vn]</span>
+              <span class="note-title-date" id="note-date">(31/11/2023)</span>
+              <span class="note-title-tag tag tag-neutral" id="note-tag">Neutral</span>
+            </div>
+            <div class="note-body">Ben declined to cover two times in November and didn't give a good reason for declining.</div>
+          </div>
+          <div class="note" id="note-2">
+            <div class="note-title">
+              <span class="note-title-name" id="addedBy">Dinh Tien Hoang</span>
+              <span class="note-title-email" id="email">[dinhhoang@ilavietnam.edu.vn]</span>
+              <span class="note-title-date" id="date">(31/06/2023)</span>
+              <span class="note-title-tag tag tag-positive">Positive</span>
+            </div>
+            <div class="note-body">Ben accepted sick call on short notice..</div>
+          </div>
+          <div class="note" id="note-3">
+            <div class="note-title">
+              <span class="note-title-name" id="addedBy">Thomas Jefferson</span>
+              <span class="note-title-email" id="email">[tj@ilavietnam.edu.vn]</span>
+              <span class="note-title-date" id="date">(31/04/2023)</span>
+              <span class="note-title-tag tag tag-caution">Caution</span>
+            </div>
+            <div class="note-body">Ben was taken off classes at HCM19 because of complaints about his lessons not being engaging. Ken does try, but he needs more time to develop as a teacher.</div>
+          </div>
+        </div>
+        <div class="main-section nodisplay" id="main-section-newNote">
+          <h4>Please provide details that will be useful to others. This information will be confidential.</h4>
+          <textarea name="newNote" id="newNote-textarea"></textarea>
+          <div class="newNote-tag">
+            <div>Please choose a tag for this note:</div>
+            <div class="newNote-statuses">
+              <div class="note-title-tag tag tag-positive tag-noSelect" id="newNote-tag-positive">Positive</div>
+              <div class="note-title-tag tag tag-neutral tag-noSelect" id="newNote-tag-neutral">Neutral</div>
+              <div class="note-title-tag tag tag-caution tag-noSelect" id="newNote-tag-caution">Caution</div>
+            </div>
+          </div>
+          <div class="newNote-login">
+            Your email address (<b><span id="newNote-userEmail">youremail@ilavietnam.edu.vn</span></b>) will be logged. If this is not you, please close this window and try again.
+          </div>
+          <div class="newForm-btn-container">
+            <div class="btn btn-submit-newNote">Submit New Note</div>
+          </div>
+        </div>
+        <div class="main-section nodisplay" id="main-section-remove">
+          <h3 class="remove-title">IMPORTANT!!! Only the Line Manager can remove a teacher from the registration.</h3>
+          <p>The teacher will <i>not</i> receive an automatic email, so it's critical that the Line Manager discusses this action with the teacher.</p>
+          <p class="remove-subtitle">See the link below for more details about removing a teacher.</p>
+          <a href="https://wwww.google.com" class="remove-link">Details about Removing a Teacher from Cover</a>
+          <div class="remove-confirmation">
+            <input type="checkbox" name="remove" id="remove-confirmation">
+            <span id="remove-confirmation-text">I confirm that I have read the conditions and details about removing this teacher from the Registration and that I am the teacher's Line Manager.</span>
+          </div>
+          <div class="btn btn-remove disabled">Unregister Teacher</div>
+        </div>
+        <div class="main-section nodisplay" id="main-section-status">
+          <h2 class="status-title">Title</h2>
+          <h3 class="status-subtitle">Subtitle</h3>
+          <p class="status-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="dev/modal_script.js"></script>
+  </body>
+</html>
