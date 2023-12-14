@@ -8,10 +8,7 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
 }
 
-// This function adds the Script and Stylesheet to Index.html
-function include(filename) {
-return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
+
 
 
 
@@ -26,23 +23,23 @@ return HtmlService.createHtmlOutputFromFile(filename).getContent();
 * *******************************/
 function getAll() {
 
-let userEmail = Session.getActiveUser().getEmail();
+    let userEmail = Session.getActiveUser().getEmail();
 
-//// get user data; if it doesn't exist, return an empty object
-const userArray = getUserFromDatabase(userEmail);
-const data = userArray ? createTeacherObject(userArray, userEmail) : {};
+    //// get user data; if it doesn't exist, return an empty object
+    const userArray = getUserFromDatabase(userEmail);
+    const data = userArray ? createTeacherObject(userArray, userEmail) : {};
 
-//// get list of centres
-const centreVals = $sheets.settings.getRange('A2:A').getValues();
-const centres = centreVals.map(centre => centre[0]).filter(centre => centre.length > 0);
+    //// get list of centres
+    const centreVals = $sheets.settings.getRange('A2:A').getValues();
+    const centres = centreVals.map(centre => centre[0]).filter(centre => centre.length > 0);
 
-return { 
-  teacher: {
-    userEmail: userEmail,
-    data: data
-  },
-  centres: centres
-}
+    return { 
+      teacher: {
+        userEmail: userEmail,
+        data: data
+      },
+      centres: centres
+    }
 
 }
 
@@ -55,29 +52,29 @@ return {
 * *******************************/
 function writeDataToTable (payload) {
 
-//// check if the active user is the same as the person in the email
-const user = Session.getActiveUser().getEmail(); 
-if (user != payload.email) { return false };
+    //// check if the active user is the same as the person in the email
+    const user = Session.getActiveUser().getEmail(); 
+    if (user != payload.email) { return false };
 
-Logger.log(payload);
+    Logger.log(payload);
 
-const writeArray = createTeacherArray(payload);
+    const writeArray = createTeacherArray(payload);
 
-const userArray = getUserFromDatabase(payload.email);
+    const userArray = getUserFromDatabase(payload.email);
 
-Logger.log(`endDate value is ${payload.endDate}; typeof = ${typeof payload.endDate}`);
+    Logger.log(`endDate value is ${payload.endDate}; typeof = ${typeof payload.endDate}`);
 
-//// write data; if exists, then overwrite; if new, then append
-if (userArray) {
-  const allData = readAllDatabaseVals();
-  const index = allData.map(row => row[1]).indexOf(payload.email);
-  const userRange = $sheets.dB.getRange(index+2,1,1, $sheets.dB.getLastColumn());
-  userRange.setValues([writeArray])
-} else {
-  $sheets.dB.appendRow(writeArray);
-}
+    //// write data; if exists, then overwrite; if new, then append
+    if (userArray) {
+      const allData = readAllDatabaseVals();
+      const index = allData.map(row => row[1]).indexOf(payload.email);
+      const userRange = $sheets.dB.getRange(index+2,1,1, $sheets.dB.getLastColumn());
+      userRange.setValues([writeArray])
+    } else {
+      $sheets.dB.appendRow(writeArray);
+    }
 
-return true;
+    return true;
 }
 
 
@@ -88,16 +85,16 @@ return true;
 * *******************************/
 function deleteUser(email) {
 
-//// check if the active user is the same as the person in the email
-const user = Session.getActiveUser().getEmail(); 
-if (user != email) { return false };
+    //// check if the active user is the same as the person in the email
+    const user = Session.getActiveUser().getEmail(); 
+    if (user != email) { return false };
 
-const allData = readAllDatabaseVals();
-const index = allData.map(row => row[1]).indexOf(email);
+    const allData = readAllDatabaseVals();
+    const index = allData.map(row => row[1]).indexOf(email);
 
-$sheets.dB.deleteRow(index+2);
+    $sheets.dB.deleteRow(index+2);
 
-return true;
+    return true;
 
 
 }
