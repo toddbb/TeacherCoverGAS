@@ -16,14 +16,15 @@ const $g = {
   uiLastCol: "AP"
 }
 
+
 const $ui = {
   alert: (msg) => {
     SpreadsheetApp.getUi().alert(msg);
   },
 
-  showSidebar: (teacher) => {
+  showModal: (payload) => {
     let template = HtmlService.createTemplateFromFile('Sheet_Sidebar');
-    template.teacher = teacher;
+    template.data = payload;
     let html = template.evaluate().setWidth(700).setHeight(500);
     SpreadsheetApp.getUi().showModalDialog(html, "Teacher Profile");
   }
@@ -53,13 +54,16 @@ const seeTeacherDetails = () => {
 
   const rowVals = $sheets.ui.getRange($g.uiFirstCol + index + ":" + $g.uiLastCol + index).getValues()[0].filter(v=>v);
 
-  let teacher = {
-    name: rowVals[1],
-    email: rowVals[2],
-    centre: rowVals[4]
+  let payload = {
+    userEmail: Session.getActiveUser().getEmail(),
+    teacher: {
+      name: rowVals[1],   //name
+      email: rowVals[2],  //email
+      centre: rowVals[4]  //centre
+    }
   }
 
-  $ui.showSidebar(teacher);
+  $ui.showModal(payload);
 
 }
 

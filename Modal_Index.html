@@ -15,9 +15,9 @@
   <body>
     <section class="section-info">
       <div class="section-info-teacher">
-        <span class="info-title" id="info-name">Benjamin Franklin</span>
+        <span class="info-title" id="info-name"><?=data.teacher.name?>Benjamin Franklin</span>
         <span class="info-subtitle">&nbsp;(</span>
-        <span class="info-subtitle" id="info-centre">OLA-HCMC19</span>
+        <span class="info-subtitle" id="info-centre"><?=data.teacher.centre?>OLA-HCMC19</span>
         <span class="info-subtitle">)</span>
       </div>
       <div class="btn btn-closeWindow">Close
@@ -34,8 +34,8 @@
         <div class="main-section" id="main-section-notes">
           <div class="note" id="note-1">
             <div class="note-title">
-              <span class="note-title-name" id="note-addedBy">Nguyen Thi Minh Khai</span>
-              <span class="note-title-email" id="note-email">[nguyentmkhai@ilavietnam.edu.vn]</span>
+              <span class="note-title-name" id="note-addedBy">Submitted by: </span>
+              <span class="note-title-email" id="note-email">nguyentmkhai@ilavietnam.edu.vn</span>
               <span class="note-title-date" id="note-date">(31/11/2023)</span>
               <span class="note-title-tag tag tag-neutral" id="note-tag">Neutral</span>
             </div>
@@ -43,8 +43,8 @@
           </div>
           <div class="note" id="note-2">
             <div class="note-title">
-              <span class="note-title-name" id="addedBy">Dinh Tien Hoang</span>
-              <span class="note-title-email" id="email">[dinhhoang@ilavietnam.edu.vn]</span>
+              <span class="note-title-name" id="addedBy">Submitted by: </span>
+              <span class="note-title-email" id="email">dinhhoang@ilavietnam.edu.vn</span>
               <span class="note-title-date" id="date">(31/06/2023)</span>
               <span class="note-title-tag tag tag-positive">Positive</span>
             </div>
@@ -52,8 +52,8 @@
           </div>
           <div class="note" id="note-3">
             <div class="note-title">
-              <span class="note-title-name" id="addedBy">Thomas Jefferson</span>
-              <span class="note-title-email" id="email">[tj@ilavietnam.edu.vn]</span>
+              <span class="note-title-name" id="addedBy">Submitted by: </span>
+              <span class="note-title-email" id="email">tj@ilavietnam.edu.vn</span>
               <span class="note-title-date" id="date">(31/04/2023)</span>
               <span class="note-title-tag tag tag-caution">Caution</span>
             </div>
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="main-section nodisplay" id="main-section-newNote">
-          <h4>Please provide details that will be useful to others. This information will be confidential.</h4>
+          <h4>Enter your note here. This information will <i>not</i> be shared with the teacher.</h4>
           <textarea name="newNote" id="newNote-textarea"></textarea>
           <div class="newNote-tag">
             <div>Please choose a tag for this note:</div>
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="newNote-login">
-            Your email address (<b><span id="newNote-userEmail">youremail@ilavietnam.edu.vn</span></b>) will be logged. If this is not you, please close this window and try again.
+            Your email address (<b><span id="newNote-userEmail"><?=data.userEmail?>youremail@ilavietnam.edu.vn</span></b>) will be logged. If this is not you, please close this window and make sure you are logged into the browser using your account.
           </div>
           <div class="newForm-btn-container">
             <div class="btn btn-submit-newNote">Submit New Note</div>
@@ -81,22 +81,31 @@
         <div class="main-section nodisplay" id="main-section-remove">
           <h3 class="remove-title">IMPORTANT!!! Only the Line Manager can remove a teacher from the registration.</h3>
           <p>The teacher will <i>not</i> receive an automatic email, so it's critical that the Line Manager discusses this action with the teacher.</p>
-          <p class="remove-subtitle">See the link below for more details about removing a teacher.</p>
-          <a href="https://wwww.google.com" class="remove-link">Details about Removing a Teacher from Cover</a>
+          <a href="https://wwww.google.com" target="_blank" class="remove-link">Details about Removing a Teacher from Cover</a>
           <div class="remove-confirmation">
             <input type="checkbox" name="remove" id="remove-confirmation">
             <span id="remove-confirmation-text">I confirm that I have read the conditions and details about removing this teacher from the Registration and that I am the teacher's Line Manager.</span>
           </div>
+          <div class="newNote-login">
+            Your email address (<b><span id="newNote-userEmail"><?=data.userEmail?>youremail@ilavietnam.edu.vn</span></b>) will be logged. If this is not you, please close this window and try again.
+          </div>
           <div class="btn btn-remove disabled">Unregister Teacher</div>
         </div>
         <div class="main-section nodisplay" id="main-section-status">
-          <h2 class="status-title">Title</h2>
-          <h3 class="status-subtitle">Subtitle</h3>
-          <p class="status-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          <h2 class="status-title"></h2>
+          <h3 class="status-subtitle"></h3>
+          <p class="status-body"></p>
         </div>
       </div>
     </section>
+    <section class="nodisplay" id="variables">
+      <span id="userEmail"><?=data.userEmail?></span>
+      <span id="name"><?=data.teacher.name?></span>
+      <span id="email"><?=data.teacher.email?></span>
+      <span id="centre"><?=data.teacher.centre?></span>
+    </section>
 
-    <script src="dev/modal_script.js"></script>
+    <script src="dev/modal_script.js"></script> 
+    <!-- <?!= include('Modal_Script'); ?> -->
   </body>
 </html>
