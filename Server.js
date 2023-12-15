@@ -56,13 +56,13 @@ function writeDataToTable (payload) {
     const user = Session.getActiveUser().getEmail(); 
     if (user != payload.email) { return false };
 
-    Logger.log(payload);
+    //Logger.log(payload);
 
     const writeArray = createTeacherArray(payload);
 
     const userArray = getUserFromDatabase(payload.email);
 
-    Logger.log(`endDate value is ${payload.endDate}; typeof = ${typeof payload.endDate}`);
+    //Logger.log(`endDate value is ${payload.endDate}; typeof = ${typeof payload.endDate}`);
 
     //// write data; if exists, then overwrite; if new, then append
     if (userArray) {
@@ -70,8 +70,10 @@ function writeDataToTable (payload) {
       const index = allData.map(row => row[1]).indexOf(payload.email);
       const userRange = $sheets.dB.getRange(index+2,1,1, $sheets.dB.getLastColumn());
       userRange.setValues([writeArray])
+      sendEmail(payload, 'Email_UpdateRegistration');
     } else {
       $sheets.dB.appendRow(writeArray);
+      sendEmail(payload, 'Email_ConfirmRegistration');
     }
 
     return true;
@@ -87,22 +89,38 @@ function deleteUser(email) {
 
     //// check if the active user is the same as the person in the email
     const user = Session.getActiveUser().getEmail(); 
-    if (user != email) { return false };
+    if (user != email) { return false };    
+
+    //// get the user information before deleting the record
+    let teacherData = getUserFromDatabase(email);
+    const objEmail = {
+      name: teacherData[0],
+      email: email
+    }
 
     const allData = readAllDatabaseVals();
     const index = allData.map(row => row[1]).indexOf(email);
 
     $sheets.dB.deleteRow(index+2);
+    
+    sendEmail(objEmail, 'Email_ConfirmUnregister');
 
     return true;
 
-
 }
 
 
 
-function test_3() {
-writeDataToTable(testTeacher.data);
+/******************************************************************/
+/**                     TESTING ONLY                             **/
+/******************************************************************/
+
+function simulate_WriteToDatabase() {
+  writeDataToTable(testTeacher.data);
+}
+
+function simulate_DeleteUser() {
+  deleteUser('todd@ilavietnam.edu.vn');
 }
 
 
@@ -130,41 +148,6 @@ writeDataToTable(testTeacher.data);
 
 
 
-/*********************************************************/
-/**                  TESTING ONLY                       **/
-/*********************************************************/
-// Function to handle data request from the client-side
-function getData() {
-  const data = $sheets.tAvail.getDataRange().getValues();
-  return JSON.stringify(data);
-}
-
-// Function to handle data submission from the client-side
-function setData(data) {
-  $sheets.tAvail.appendRow(data);
-}
-
-
-function testGetAll() {
-console.log(getAll());
-}
-
-
-function testClass() {  
-
-let userEmail = 'todd@ilavietnam.edu.vn';
-
-const lastRow = sheets.tAvail.getLastRow();
-const lastCol = sheets.tAvail.getLastColumn();
-
-const data = sheets.tAvail.getRange(2, 1, lastRow - 1, lastCol).getValues();
-const userData = data.filter(row => row[1] === userEmail)[0];
-
-let t = new Teacher(...userData);
-console.log(JSON.stringify(t));
-console.log(t.email);
-
-}
 
 
 

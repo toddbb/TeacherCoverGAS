@@ -1,3 +1,28 @@
+/*** EXAMPLE OF TEACHER OBJECT TO/FROM CLIENT & SERVER  ****/
+const testTeacher = {
+  userEmail: "todd@ilavietnam.edu.vn",
+  data: {
+      name: "Todd Bierbaum",
+      email: "todd@ilavietnam.edu.vn",
+      phone: "012 345 6789",
+      centre: "TC-HCMC12",
+      availability: {
+          monday: [false, false, true],
+          tuesday: [false, false, false],
+          wednesday: [true, true, true],
+          thursday: [true, true, false],
+          friday: [false, false, false],
+          saturday: [false, true, false],
+          sunday: [false, true, false]
+      },
+      coverType: ["ILA / OLA Classes", "Public School Classes", "Placement Testing"],
+      locations: ["North", "East", "Central"],
+      endDate: "30/06/2024"
+  }
+}
+
+
+
 /*************************************************************/
 /**                    READ/WRITE DATABASE                   */
 /*************************************************************/
@@ -115,63 +140,22 @@ const createTeacherArray = (obj) => {
 
 
 
-/********* TESTING ONLY ***************/
-function test_1() {
+/*******************************************************************/
+/**                     TESTING ONLY                               */
+/*******************************************************************/
+
+function test_createTeacherObject() {
   let userEmail = Session.getActiveUser().getEmail();
   let array = getUserFromDatabase(userEmail);
-
   Logger.log(createTeacherObject(array));
 }
 
 
 
 
-function test_2() {
+function test_createTeacherArray() {
   Logger.log(createTeacherArray(testTeacher.data));
 }
 
 
 
-/*** EXAMPLE OF TEACHER OBJECT  ****/
-
-const testTeacher = {
-  userEmail: "freddie@mymail.net",
-  data: {
-      name: "Freddie Mercury",
-      email: "todd@ilavietnam.edu.vn",
-      phone: "012 345 6789",
-      centre: "TC-HCMC12",
-      availability: {
-          monday: [false, false, true],
-          tuesday: [false, false, false],
-          wednesday: [true, true, true],
-          thursday: [true, true, false],
-          friday: [false, false, false],
-          saturday: [false, true, false],
-          sunday: [false, true, false]
-      },
-      coverType: ["ILA / OLA Classes", "Public School Classes"],
-      locations: ["North", "East", "Central"],
-      endDate: "05/06/2024"
-  }
-}
-
-
-
-
-/***********************************************/
-/**           CLASS: Teacher                   */
-/***********************************************/
-
-const Teacher = class {
-  constructor(name, email, phone, centre, availability, coverType, locations, endDate) {
-    this.name = name;
-    this.email = email;
-    this.phone = phone;
-    this.centre = centre;
-    this.availability = availability;
-    this.coverType = coverType;
-    this.locations = locations;
-    this.endDate = endDate;
-  }
-}

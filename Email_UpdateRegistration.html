@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head> 
+    <style>
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+        }
+        .container {
+            max-width: 600px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            font-size: 95%;
+        }
+        .details {
+            margin: 5px 0;
+        }
+        
+        .availability {
+            border: 1px solid #bbb;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table * { font-size: 95%; }
+
+        .headers {
+            background-color: #bcf7cc;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .rowTitle, .cell {
+            border: 1px solid #bbb;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .rowTitle {
+            font-weight: bold;
+        }
+
+        .cell {
+            empty-cells: show;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        ul {
+            margin: 5px 0;
+        }
+
+    </style>
+  </head>
+  <body>
+    <p>Dear <?=data.name?>,</p>
+    <p>Your information has been updated as you requested.</p>
+    <p>Thank you for yor continued interest in covering classes</p>
+
+    <div class="container">
+        <p class="details"><b>Name: </b><?=data.name?></p>
+        <p class="details"><b>Email: </b><?=data.email?></p>
+        <p class="details"><b>Phone: </b><?=data.phone?></p>
+        <p class="details"><b>Centre: </b><?=data.centre?></p>
+        <p class="details"><b>Availability: </b></p>
+        <table class="availability">
+            <tbody>
+                <tr class="headers">
+                    <th>Day/Time</th>
+                    <th>Morning</th>
+                    <th>Afternoon</th>
+                    <th>Afternoon</th>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Monday</td>
+                    <td class="cell"><?=data.availability.monday[0]?></td>
+                    <td class="cell"><?=data.availability.monday[1]?></td>
+                    <td class="cell"><?=data.availability.monday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Tuesday</td>
+                    <td class="cell"><?=data.availability.tuesday[0]?></td>
+                    <td class="cell"><?=data.availability.tuesday[1]?></td>
+                    <td class="cell"><?=data.availability.tuesday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Wednesday</td>
+                    <td class="cell"><?=data.availability.wednesday[0]?></td>
+                    <td class="cell"><?=data.availability.wednesday[1]?></td>
+                    <td class="cell"><?=data.availability.wednesday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Thursday</td>
+                    <td class="cell"><?=data.availability.thursday[0]?></td>
+                    <td class="cell"><?=data.availability.thursday[1]?></td>
+                    <td class="cell"><?=data.availability.thursday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Friday</td>
+                    <td class="cell"><?=data.availability.friday[0]?></td>
+                    <td class="cell"><?=data.availability.friday[1]?></td>
+                    <td class="cell"><?=data.availability.friday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Saturday</td>
+                    <td class="cell"><?=data.availability.saturday[0]?></td>
+                    <td class="cell"><?=data.availability.saturday[1]?></td>
+                    <td class="cell"><?=data.availability.saturday[2]?></td>
+                </tr>
+                <tr class="row">
+                    <td class="rowTitle">Sday</td>
+                    <td class="cell"><?=data.availability.sunday[0]?></td>
+                    <td class="cell"><?=data.availability.sunday[1]?></td>
+                    <td class="cell"><?=data.availability.sunday[2]?></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="details"><b>Types of Cover:</b><?=data.coverType?></p>
+        <p class="details"><b>Location(s) [<a href="https://drive.google.com/file/d/1Kfr8iceGPF43TdQVhYZaf9hOWY8qprkz/view?usp=drive_link" target="_blank">map</a>]: </b><?=data.locations?></p>
+        <p class="details"><b>End Date: </b><?=data.endDate?></p>
+    </div>
+    <br>
+    <p>Sincerely,</p>
+    <p class="signature">ILA Vietnam</p>
+</body>
+</html>

@@ -161,7 +161,7 @@ const Form = {
         let checked = [...types].filter(type => type.checked);
         return checked.map(el => {
             return el.nextSibling.nextSibling.innerText;
-        })        
+        })
     },
 
     getAvailResponses: () => {
@@ -197,7 +197,7 @@ const Form = {
                 invalids.push(prop);
             }
         }
-        //// validate phone number        
+        //// validate phone number
         const regex = /^[+()\d][\d\s-()+]+$/;
         if (!regex.test(userInput.phone) || userInput.phone.length < 7) { invalids.push('phone'); };
 

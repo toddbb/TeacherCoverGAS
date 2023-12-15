@@ -1,7 +1,5 @@
-
-
 /*****************************************************/
-/*******           GLOBAL  FUNCTIONS          ********/
+/*******       UNIVERSAL ENDPOINT             ********/
 /*****************************************************/
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
@@ -27,6 +25,11 @@ const $g = {
 }
 
 
+
+/*****************************************************/
+/*******             METHODS                 ********/
+/*****************************************************/
+
 const $ui = {
   alert: (msg) => {
     SpreadsheetApp.getUi().alert(msg);
@@ -41,9 +44,6 @@ const $ui = {
 
 }
 
-/*****************************************************/
-/*******             METHODS                 ********/
-/*****************************************************/
 const $formatting = {
 
   setColumnFormatToText: (sheet, columnNumber) => {
@@ -54,15 +54,13 @@ const $formatting = {
   }
 }
 
-function test_5() {
-  $formatting.setColumnFormatToText($sheets.notes, 1);
-}
 
 /*****************************************************/
 /*******           EVENTS                     ********/
 /*****************************************************/
 
 const seeTeacherDetails = () => {
+
   //// get the row that is checked
   const checkboxes = $sheets.ui.getRange('B6:B').getValues();
   const index = checkboxes.findIndex(row => row[0]) + 6;
@@ -84,7 +82,7 @@ const seeTeacherDetails = () => {
     teacherNotes.push(["", "", "", "", "", "", ""])
   }
 
-  Logger.log(teacherNotes);
+  //Logger.log(teacherNotes);
 
   /// put teacher notes in object
   let objNotes = {};
@@ -109,13 +107,11 @@ const seeTeacherDetails = () => {
     notes: objNotes
   }
 
-  Logger.log(payload);
+  //Logger.log(payload);
 
   $ui.showModal(payload);
 
 }
-
-
 
 
 /*****************************************************/
@@ -126,4 +122,6 @@ function log(msg) {
   const timestamp = Utilities.formatDate(new Date(), "GMT+7", "dd-MM-yyyy HH:mm:ss");
   $sheets.log.appendRow([timestamp, msg]);
 }
+
+
 
